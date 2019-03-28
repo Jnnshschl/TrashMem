@@ -1,0 +1,6 @@
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Debug\TrashMem.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Debug\TrashMem.pdb
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.csprojAssemblyReference.cache
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.csproj.CoreCompileInputs.cache
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.pdb

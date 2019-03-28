@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28714.193
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrashMem", "TrashMem\TrashMem.csproj", "{2529AB15-257A-455A-B86C-A295E7008E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrashMemTests", "TrashMemTests\TrashMemTests.csproj", "{2098DDEB-22DE-4FD0-B3A5-62131C6E4B51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2529AB15-257A-455A-B86C-A295E7008E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2529AB15-257A-455A-B86C-A295E7008E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2529AB15-257A-455A-B86C-A295E7008E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2529AB15-257A-455A-B86C-A295E7008E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2098DDEB-22DE-4FD0-B3A5-62131C6E4B51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2098DDEB-22DE-4FD0-B3A5-62131C6E4B51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2098DDEB-22DE-4FD0-B3A5-62131C6E4B51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2098DDEB-22DE-4FD0-B3A5-62131C6E4B51}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {455673D1-B521-40AF-B480-C9FB1CE794ED}
+	EndGlobalSection
+EndGlobal

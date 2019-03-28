@@ -1,0 +1,10 @@
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Debug\de\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Debug\de\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Debug\de\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Debug\TrashMemTests.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMemTests\Debug\TrashMemTests.csproj.CoreCompileInputs.cache
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMemTests\Debug\TrashMemTests.csproj.CopyComplete
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMemTests\Debug\TrashMemTests.dll

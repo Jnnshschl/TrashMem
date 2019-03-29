@@ -1,0 +1,5 @@
+C:\Users\Administrator\source\repos\TrashMem\TrashMem\bin\Release\TrashMem.dll
+C:\Users\Administrator\source\repos\TrashMem\TrashMem\bin\Release\TrashMem.pdb
+C:\Users\Administrator\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.dll
+C:\Users\Administrator\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.pdb

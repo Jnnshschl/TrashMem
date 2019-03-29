@@ -1,0 +1,10 @@
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.Benchmark.exe.config
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.Benchmark.exe
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.Benchmark.pdb
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.dll
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.pdb
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.csproj.CopyComplete
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.exe
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.pdb
+C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.csprojAssemblyReference.cache

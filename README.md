@@ -26,29 +26,50 @@ Should be pretty self explaining unless otherwise specified...
 TrashMem trashMem = new TrashMem(process);
 
 // Possible Accessrights
-// READ = 0x10 | WRITE = 0x20 | READWRITE = 0x30
+// READ = 0x10 | WRITE = 0x20 | READWRITE = 0x30 | ALL = 0x1F0FFF
 // for more see this page 
 // => https://docs.microsoft.com/de-de/windows/desktop/ProcThread/process-security-and-access-rights
 TrashMem trashMem = new TrashMem(process, ACCESS_RIGHTS);
 
 // Generic Reading
-public unsafe T ReadUnmanaged<T>(int address);
-public T ReadStruct<T>(int address);
-public string ReadString(int address, Encoding encoding, int lenght);
+public unsafe T ReadUnmanaged<T>(uint address);
+public T ReadStruct<T>(uint address);
+public string ReadString(uint address, Encoding encoding, int lenght);
 
 // 1 byte char
-public unsafe byte ReadChar(int address);
-public byte ReadCharSafe(int address);
+public unsafe byte ReadChar(uint address);
+public byte ReadCharSafe(uint address);
+
+// X bytes chars
+public byte[] ReadChars(uint address);
 
 // 2 byte short
-public unsafe short ReadInt16(int address);
-public short ReadInt16Safe(int address);
+public unsafe short ReadInt16(uint address);
+public short ReadInt16Safe(uint address);
+
+public unsafe ushort ReadUInt16(uint address);
+public ushort ReadUInt16Safe(uint address);
 
 // 4 byte int
-public unsafe int ReadInt32(int address);
-public int ReadInt32Safe(int address);
+public unsafe int ReadInt32(uint address);
+public int ReadInt32Safe(uint address);
+
+public unsafe uint ReadUInt32(int address);
+public uint ReadUInt32Safe(uint address);
 
 // 8 byte long
-public unsafe long ReadInt64(int address);
-public long ReadInt64Safe(int address);
+public unsafe long ReadInt64(uint address);
+public long ReadInt64Safe(uint address);
+
+public unsafe ulong ReadUInt64(uint address);
+public ulong ReadUInt64Safe(uint address);
+
+// Generic Writing
+public bool Write<T>(uint address, T value, int size = 0);
+public bool WriteBytes(uint address, byte[] value);
+public bool WriteString(uint address, string text, Encoding encoding);
+
+// Memory Allocation/Freeing
+public uint AllocateMemory(int size);
+public bool FreeMemory(uint address);
 ```

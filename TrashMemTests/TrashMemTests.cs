@@ -193,5 +193,23 @@ namespace TrashMemCore.Tests
             uint memaddr = TrashMem.AllocateMemory(32);
             Assert.IsTrue(TrashMem.FreeMemory(memaddr));
         }
+
+        [TestMethod()]
+        public void MemoryAllocFreeMultiCharsBytesTest()
+        {
+            uint memaddr = TrashMem.AllocateMemory(32);
+
+            byte[] sampleBytes = new byte[] { 0x1, 0x2, 0x3, 0x4, 0x5 };
+            TrashMem.WriteBytes(memaddr, sampleBytes);
+            byte[] bytesRead = TrashMem.ReadChars(memaddr, 5);
+
+            Assert.AreEqual(sampleBytes[0], bytesRead[0]);
+            Assert.AreEqual(sampleBytes[1], bytesRead[1]);
+            Assert.AreEqual(sampleBytes[2], bytesRead[2]);
+            Assert.AreEqual(sampleBytes[3], bytesRead[3]);
+            Assert.AreEqual(sampleBytes[4], bytesRead[4]);
+
+            Assert.IsTrue(TrashMem.FreeMemory(memaddr));
+        }
     }
 }

@@ -11,4 +11,3 @@ C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CoreC
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CopyComplete
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.pdb
-C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csprojAssemblyReference.cache

@@ -136,6 +136,29 @@ namespace TrashMemCore
         }
         #endregion
 
+
+        #region Read => X Bytes Chars/Bytes
+        /// <summary>
+        /// Read a char/byte from memory.
+        /// 
+        /// Uses the BitConverter instead
+        /// of the unsafe code.
+        /// </summary>
+        /// <param name="address">address to read</param>
+        /// <returns>the short value or 0 if it failed</returns>
+        public byte[] ReadChars(uint address, int size)
+        {
+            int numBytesRead = 0;
+            byte[] readBuffer = new byte[size];
+
+            if (ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
+            {
+                return readBuffer;
+            }
+            return new byte[] { 0x0 };
+        }
+        #endregion
+
         #region Read => 1 Byte Char/Byte
         /// <summary>
         /// Read a char/byte from memory.
@@ -329,6 +352,22 @@ namespace TrashMemCore
             Marshal.DestroyStructure(writeBuffer, typeof(T));
             Marshal.FreeHGlobal(writeBuffer);
 
+            return result;
+        }
+
+
+        /// <summary>
+        /// Write anything to memory.
+        /// </summary>
+        /// <typeparam name="T">Type of thing to read</typeparam>
+        /// <param name="address">address to read it from</param>
+        /// <param name="value">thing ti write</param>
+        /// <param name="size">optional size</param>
+        /// <returns>true if successful, false if it failed</returns>
+        public bool WriteBytes(uint address, byte[] value)
+        {
+            int numBytesWritten = 0;
+            bool result = WriteProcessMemory(ProcessHandle, address, value, value.Length, ref numBytesWritten);
             return result;
         }
 

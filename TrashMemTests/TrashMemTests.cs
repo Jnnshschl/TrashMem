@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using TrashMem;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -24,11 +25,11 @@ namespace TrashMem.Tests
         /// to make thse tests work, maybe i will build some internal stuff
         /// but who knows...
         /// </summary>
-        private const int STATIC_ADDRESS_CHAR = 0x133A48C;
-        private const int STATIC_ADDRESS_INT16 = 0x133A490;
-        private const int STATIC_ADDRESS_INT32 = 0x133A494;
-        private const int STATIC_ADDRESS_INT64 = 0x133A498;
-        private const int STATIC_ADDRESS_STRING = 0xFCE478C;
+        private const int STATIC_ADDRESS_CHAR = 0x30A48C;
+        private const int STATIC_ADDRESS_INT16 = 0x30A490;
+        private const int STATIC_ADDRESS_INT32 = 0x30A494;
+        private const int STATIC_ADDRESS_INT64 = 0x30A498;
+        private const int STATIC_ADDRESS_STRING = 0x5B1A4785;
 
         private TrashMem TrashMem;
 
@@ -99,5 +100,91 @@ namespace TrashMem.Tests
         [TestMethod()]
         public void ReadInt64SafeTest()
             => Assert.AreEqual(0xFFFFFFFFFFFFFF, TrashMem.ReadInt64Safe(STATIC_ADDRESS_INT64));
+
+
+        [TestMethod()]
+        public void WriteCharTest()
+        {
+            Assert.IsTrue(TrashMem.Write<byte>(STATIC_ADDRESS_CHAR, 0xF));
+            Assert.AreEqual(0xF, TrashMem.ReadChar(STATIC_ADDRESS_CHAR));
+            Assert.IsTrue(TrashMem.Write<byte>(STATIC_ADDRESS_CHAR, 0xE));
+            Assert.AreEqual(0xE, TrashMem.ReadChar(STATIC_ADDRESS_CHAR));
+            Assert.IsTrue(TrashMem.Write<byte>(STATIC_ADDRESS_CHAR, 0xF));
+            Assert.AreEqual(0xF, TrashMem.ReadChar(STATIC_ADDRESS_CHAR));
+        }
+
+
+        [TestMethod()]
+        public void WriteInt16Test()
+        {
+            Assert.IsTrue(TrashMem.Write<short>(STATIC_ADDRESS_INT16, 0xFF));
+            Assert.AreEqual(0xFF, TrashMem.ReadInt32(STATIC_ADDRESS_INT16));
+            Assert.IsTrue(TrashMem.Write<short>(STATIC_ADDRESS_INT16, 0xFE));
+            Assert.AreEqual(0xFE, TrashMem.ReadInt32(STATIC_ADDRESS_INT16));
+            Assert.IsTrue(TrashMem.Write<short>(STATIC_ADDRESS_INT16, 0xFF));
+            Assert.AreEqual(0xFF, TrashMem.ReadInt32(STATIC_ADDRESS_INT16));
+        }
+
+
+        [TestMethod()]
+        public void WriteInt32Test()
+        {
+            Assert.IsTrue(TrashMem.Write<int>(STATIC_ADDRESS_INT32, 0xFFFF));
+            Assert.AreEqual(0xFFFF, TrashMem.ReadInt32(STATIC_ADDRESS_INT32));
+            Assert.IsTrue(TrashMem.Write<int>(STATIC_ADDRESS_INT32, 0xFFFE));
+            Assert.AreEqual(0xFFFE, TrashMem.ReadInt32(STATIC_ADDRESS_INT32));
+            Assert.IsTrue(TrashMem.Write<int>(STATIC_ADDRESS_INT32, 0xFFFF));
+            Assert.AreEqual(0xFFFF, TrashMem.ReadInt32(STATIC_ADDRESS_INT32));
+        }
+
+        [TestMethod()]
+        public void WriteInt64Test()
+        {
+            Assert.IsTrue(TrashMem.Write<long>(STATIC_ADDRESS_INT64, 0xFFFFFFFFFFFFFF));
+            Assert.AreEqual(0xFFFFFFFFFFFFFF, TrashMem.ReadInt64(STATIC_ADDRESS_INT64));
+            Assert.IsTrue(TrashMem.Write<long>(STATIC_ADDRESS_INT64, 0xFFFFFFFFFFFFFE));
+            Assert.AreEqual(0xFFFFFFFFFFFFFE, TrashMem.ReadInt64(STATIC_ADDRESS_INT64));
+            Assert.IsTrue(TrashMem.Write<long>(STATIC_ADDRESS_INT64, 0xFFFFFFFFFFFFFF));
+            Assert.AreEqual(0xFFFFFFFFFFFFFF, TrashMem.ReadInt64(STATIC_ADDRESS_INT64));
+        }
+
+        [TestMethod()]
+        public void WriteStruct()
+        {
+            TestStruct t = new TestStruct() { a = 0xFF, b = 0xFFFF, c = 0xFFFFFFFFFFFFFF };
+            Assert.IsTrue(TrashMem.Write<TestStruct>(STATIC_ADDRESS_INT16, t));
+            TestStruct r = TrashMem.ReadStruct<TestStruct>(STATIC_ADDRESS_INT16);
+            Assert.AreEqual(t, r);
+
+            t = new TestStruct() { a = 0xFE, b = 0xFFFE, c = 0xFFFFFFFFFFFFFE };
+            Assert.IsTrue(TrashMem.Write<TestStruct>(STATIC_ADDRESS_INT16, t));
+            r = TrashMem.ReadStruct<TestStruct>(STATIC_ADDRESS_INT16);
+            Assert.AreEqual(t, r);
+
+            t = new TestStruct() { a = 0xFF, b = 0xFFFF, c = 0xFFFFFFFFFFFFFF };
+            Assert.IsTrue(TrashMem.Write<TestStruct>(STATIC_ADDRESS_INT16, t));
+            r = TrashMem.ReadStruct<TestStruct>(STATIC_ADDRESS_INT16);
+            Assert.AreEqual(t, r);
+        }
+
+        [TestMethod()]
+        public void WriteStringTest()
+        {
+            Assert.IsTrue(TrashMem.WriteString(STATIC_ADDRESS_STRING, "ShittyMcUlow", Encoding.ASCII));
+            Assert.AreEqual("ShittyMcUlow", TrashMem.ReadString(STATIC_ADDRESS_STRING, Encoding.ASCII, 12));
+            Assert.IsTrue(TrashMem.WriteString(STATIC_ADDRESS_STRING, "ShittyMcUlox", Encoding.ASCII));
+            Assert.AreEqual("ShittyMcUlox", TrashMem.ReadString(STATIC_ADDRESS_STRING, Encoding.ASCII, 12));
+            Assert.IsTrue(TrashMem.WriteString(STATIC_ADDRESS_STRING, "ShittyMcUlow", Encoding.ASCII));
+            Assert.AreEqual("ShittyMcUlow", TrashMem.ReadString(STATIC_ADDRESS_STRING, Encoding.ASCII, 12));
+        }
+
+        [TestMethod()]
+        public void FasmTest()
+        {
+            TrashMem.FasmNet.Clear();
+            TrashMem.FasmNet.AddLine("MOV EAX, 1");
+            TrashMem.FasmNet.Assemble();
+            TrashMem.FasmNet.Clear();
+        }
     }
 }

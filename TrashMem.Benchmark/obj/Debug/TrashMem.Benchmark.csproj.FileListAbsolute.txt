@@ -8,3 +8,15 @@ C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashM
 C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.exe
 C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.pdb
 C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.csprojAssemblyReference.cache
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.Benchmark.exe.config
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.Benchmark.exe
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.Benchmark.pdb
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\TrashMem.pdb
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.csprojAssemblyReference.cache
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.csproj.CoreCompileInputs.cache
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.csproj.CopyComplete
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.exe
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Debug\TrashMem.Benchmark.pdb
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\Fasm.NET.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Debug\Fasm.NET.xml

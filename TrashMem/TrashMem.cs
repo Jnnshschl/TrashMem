@@ -1,26 +1,38 @@
-﻿using System;
+﻿using Binarysharp.Assemblers.Fasm;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using TrashMem.SizeManager;
 
 namespace TrashMem
 {
     public class TrashMem
     {
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32.dll", SetLastError = true)]
         public static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
         public Process Process { get; private set; }
         public int ProcessHandle { get; private set; }
+
+        public CachedSizeManager CachedSizeManager { get; private set; }
+
+        public FasmNet FasmNet { get; private set; }
 
         /// <summary>
         /// TrashMem instance, use it to do all the stuff you want.
@@ -32,8 +44,10 @@ namespace TrashMem
         /// READ = 0x10 | WRITE = 0x20 | READWRITE = 0x30
         /// => https://docs.microsoft.com/de-de/windows/desktop/ProcThread/process-security-and-access-rights
         /// </param>
-        public TrashMem(Process process, int accessRights = 0x30)
+        public TrashMem(Process process, int accessRights = 0x1F0FFF)
         {
+            CachedSizeManager = new CachedSizeManager();
+            FasmNet = new FasmNet();
             Process = process;
             ProcessHandle = OpenProcess(accessRights, false, process.Id);
         }
@@ -88,14 +102,12 @@ namespace TrashMem
         }
 
         /// <summary>
-        /// Read anything from memory. 
-        /// 
-        /// May be a bit slower than using the specialized 
-        /// function like ReadInt(), just saying...
+        /// Read a string from memory
         /// </summary>
-        /// <typeparam name="T">Type of thing to read</typeparam>
         /// <param name="address">address to read it from</param>
-        /// <returns>the value or default(T) if it failed</returns>
+        /// <param name="encoding">Encoding to use</param>
+        /// <param name="lenght">lenght of the string to read</param>
+        /// <returns>the string read from memory</returns>
         public string ReadString(int address, Encoding encoding, int lenght = 0)
         {
             int numBytesRead = 0;
@@ -274,6 +286,53 @@ namespace TrashMem
                 return BitConverter.ToInt64(readBuffer, 0);
             }
             return 0;
+        }
+        #endregion
+
+        #region Write => Generic
+        /// <summary>
+        /// Write anything to memory.
+        /// </summary>
+        /// <typeparam name="T">Type of thing to read</typeparam>
+        /// <param name="address">address to read it from</param>
+        /// <param name="value">thing ti write</param>
+        /// <param name="size">optional size</param>
+        /// <returns>true if successful, false if it failed</returns>
+        public bool Write<T>(int address, T value, int size = 0)
+        {
+            if (size == 0)
+            {
+                size = CachedSizeManager.SizeOf(typeof(T));
+            }
+
+            IntPtr writeBuffer = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(value, writeBuffer, false);
+
+            int numBytesWritten = 0;
+            bool result = WriteProcessMemory(ProcessHandle, address, writeBuffer, size, ref numBytesWritten);
+
+            Marshal.DestroyStructure(writeBuffer, typeof(T));
+            Marshal.FreeHGlobal(writeBuffer);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Write a string to memory
+        /// </summary>
+        /// <param name="address">address to write it to</param>
+        /// <param name="text">the actual text to write</param>
+        /// <param name="encoding">Encoding to use</param>
+        /// <returns>true if successful, false if it failed</returns>
+        public bool WriteString(int address, string text, Encoding encoding)
+        {
+            byte[] stringBytes = encoding.GetBytes(text);
+            int size = stringBytes.Length;
+
+            int numBytesWritten = 0;
+            bool result = WriteProcessMemory(ProcessHandle, address, stringBytes, size, ref numBytesWritten);
+
+            return result;
         }
         #endregion
     }

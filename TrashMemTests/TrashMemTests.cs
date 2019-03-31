@@ -1,4 +1,4 @@
-﻿using TrashMem;
+﻿using TrashMemCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
-namespace TrashMem.Tests
+namespace TrashMemCore.Tests
 {
     internal struct TestStruct
     {
@@ -25,11 +25,11 @@ namespace TrashMem.Tests
         /// to make thse tests work, maybe i will build some internal stuff
         /// but who knows...
         /// </summary>
-        private const int STATIC_ADDRESS_CHAR = 0x30A48C;
-        private const int STATIC_ADDRESS_INT16 = 0x30A490;
-        private const int STATIC_ADDRESS_INT32 = 0x30A494;
-        private const int STATIC_ADDRESS_INT64 = 0x30A498;
-        private const int STATIC_ADDRESS_STRING = 0x5B1A4785;
+        private const uint STATIC_ADDRESS_CHAR = 0x30A48C;
+        private const uint STATIC_ADDRESS_INT16 = 0x30A490;
+        private const uint STATIC_ADDRESS_INT32 = 0x30A494;
+        private const uint STATIC_ADDRESS_INT64 = 0x30A498;
+        private const uint STATIC_ADDRESS_STRING = 0x5B1A4785;
 
         private TrashMem TrashMem;
 
@@ -185,6 +185,13 @@ namespace TrashMem.Tests
             TrashMem.FasmNet.AddLine("MOV EAX, 1");
             TrashMem.FasmNet.Assemble();
             TrashMem.FasmNet.Clear();
+        }
+
+        [TestMethod()]
+        public void MemoryAllocFreeTest()
+        {
+            uint memaddr = TrashMem.AllocateMemory(32);
+            Assert.IsTrue(TrashMem.FreeMemory(memaddr));
         }
     }
 }

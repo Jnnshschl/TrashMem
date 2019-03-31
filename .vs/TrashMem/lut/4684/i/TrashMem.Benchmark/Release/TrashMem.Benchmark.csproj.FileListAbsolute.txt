@@ -1,13 +1,6 @@
-C:\Users\Administrator\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMem.Benchmark\bin\Release\TrashMem.Benchmark.exe.config
-C:\Users\Administrator\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMem.Benchmark\bin\Release\TrashMem.Benchmark.exe
-C:\Users\Administrator\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.csproj.CoreCompileInputs.cache
-C:\Users\Administrator\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.csproj.CopyComplete
-C:\Users\Administrator\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.exe
-C:\Users\Administrator\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.csprojAssemblyReference.cache
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMem.Benchmark\bin\Release\TrashMem.Benchmark.exe.config
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMem.Benchmark\bin\Release\TrashMem.Benchmark.exe
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.csprojAssemblyReference.cache
-C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.exe.config
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.csproj.CoreCompileInputs.cache
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.csproj.CopyComplete
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Benchmark\Release\TrashMem.Benchmark.exe

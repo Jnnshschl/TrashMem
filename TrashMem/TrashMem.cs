@@ -6,26 +6,36 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using TrashMem.SizeManager;
+using TrashMemCore.SizeManager;
 
-namespace TrashMem
+namespace TrashMemCore
 {
     public class TrashMem
     {
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+        static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+        static extern bool CloseHandle(int handle);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+        static extern bool ReadProcessMemory(int hProcess, uint lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+        static extern bool ReadProcessMemory(int hProcess, uint lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+        static extern bool WriteProcessMemory(int hProcess, uint lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool WriteProcessMemory(int hProcess, uint lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern uint VirtualAllocEx(int hProcess, uint dwAddress, int dwSize, uint dwAllocationType, uint dwProtect);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool VirtualFreeEx(int hProcess, uint dwAddress, int dwSize, uint dwFreeType);
+
 
         public Process Process { get; private set; }
         public int ProcessHandle { get; private set; }
@@ -52,6 +62,11 @@ namespace TrashMem
             ProcessHandle = OpenProcess(accessRights, false, process.Id);
         }
 
+        public void Detach()
+        {
+            CloseHandle(ProcessHandle);
+        }
+
         #region Read => Generic
         /// <summary>
         /// Read anything unmanaged from memory. 
@@ -62,7 +77,7 @@ namespace TrashMem
         /// <typeparam name="T">Type of thing to read</typeparam>
         /// <param name="address">address to read it from</param>
         /// <returns>the value or default(T) if it failed</returns>
-        public unsafe T ReadUnmanaged<T>(int address, int size = 0) where T : unmanaged
+        public unsafe T ReadUnmanaged<T>(uint address, int size = 0) where T : unmanaged
         {
             if (size == 0)
             {
@@ -88,7 +103,7 @@ namespace TrashMem
         /// <typeparam name="T">Type of thing to read</typeparam>
         /// <param name="address">address to read it from</param>
         /// <returns>the struct or default if it failed</returns>
-        public T ReadStruct<T>(int address)
+        public T ReadStruct<T>(uint address)
         {
             int size = Marshal.SizeOf(typeof(T));
             int numBytesRead = 0;
@@ -108,7 +123,7 @@ namespace TrashMem
         /// <param name="encoding">Encoding to use</param>
         /// <param name="lenght">lenght of the string to read</param>
         /// <returns>the string read from memory</returns>
-        public string ReadString(int address, Encoding encoding, int lenght = 0)
+        public string ReadString(uint address, Encoding encoding, int lenght = 0)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[lenght];
@@ -127,7 +142,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe byte ReadChar(int address)
+        public unsafe byte ReadChar(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[1];
@@ -150,7 +165,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public byte ReadCharSafe(int address)
+        public byte ReadCharSafe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[1];
@@ -169,7 +184,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe short ReadInt16(int address)
+        public unsafe short ReadInt16(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
@@ -192,7 +207,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public short ReadInt16Safe(int address)
+        public short ReadInt16Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
@@ -211,7 +226,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public unsafe int ReadInt32(int address)
+        public unsafe int ReadInt32(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
@@ -234,7 +249,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public int ReadInt32Safe(int address)
+        public int ReadInt32Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
@@ -253,7 +268,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public unsafe long ReadInt64(int address)
+        public unsafe long ReadInt64(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
@@ -276,7 +291,7 @@ namespace TrashMem
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public long ReadInt64Safe(int address)
+        public long ReadInt64Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
@@ -298,7 +313,7 @@ namespace TrashMem
         /// <param name="value">thing ti write</param>
         /// <param name="size">optional size</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool Write<T>(int address, T value, int size = 0)
+        public bool Write<T>(uint address, T value, int size = 0)
         {
             if (size == 0)
             {
@@ -324,7 +339,7 @@ namespace TrashMem
         /// <param name="text">the actual text to write</param>
         /// <param name="encoding">Encoding to use</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool WriteString(int address, string text, Encoding encoding)
+        public bool WriteString(uint address, string text, Encoding encoding)
         {
             byte[] stringBytes = encoding.GetBytes(text);
             int size = stringBytes.Length;
@@ -333,6 +348,18 @@ namespace TrashMem
             bool result = WriteProcessMemory(ProcessHandle, address, stringBytes, size, ref numBytesWritten);
 
             return result;
+        }
+        #endregion
+
+        #region Memory
+        public uint AllocateMemory(int size)
+        {
+            return VirtualAllocEx(ProcessHandle, 0, size, 0x00001000, 0x40);
+        }
+
+        public bool FreeMemory(uint address)
+        {
+            return VirtualFreeEx(ProcessHandle, address, 0, 0x8000);
         }
         #endregion
     }

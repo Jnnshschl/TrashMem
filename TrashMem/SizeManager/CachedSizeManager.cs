@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrashMem.SizeManager
+namespace TrashMemCore.SizeManager
 {
     public class CachedSizeManager
     {

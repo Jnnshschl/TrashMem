@@ -1,5 +1,6 @@
 ﻿using Binarysharp.Assemblers.Fasm;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -130,12 +131,20 @@ namespace TrashMemCore
 
             if (ReadProcessMemory(ProcessHandle, address, readBuffer, lenght, ref numBytesRead))
             {
-                return encoding.GetString(readBuffer);
+                List<byte> newBytes = new List<byte>();
+
+                foreach (byte b in readBuffer)
+                {
+                    if (b == 0b0)
+                        break;
+                    newBytes.Add(b);
+                }
+
+                return encoding.GetString(newBytes.ToArray()).Trim();
             }
             return "";
         }
         #endregion
-
 
         #region Read => X Bytes Chars/Bytes
         /// <summary>
@@ -241,6 +250,46 @@ namespace TrashMemCore
             }
             return 0;
         }
+
+        /// <summary>
+        /// Read a short from memory.
+        /// </summary>
+        /// <param name="address">address to read</param>
+        /// <returns>the short value or 0 if it failed</returns>
+        public unsafe ushort ReadUInt16(uint address)
+        {
+            int numBytesRead = 0;
+            byte[] readBuffer = new byte[2];
+
+            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
+            {
+                fixed (byte* ptr = readBuffer)
+                {
+                    return *(ushort*)ptr;
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Read a short from memory.
+        /// 
+        /// Uses the BitConverter instead
+        /// of the unsafe code.
+        /// </summary>
+        /// <param name="address">address to read</param>
+        /// <returns>the short value or 0 if it failed</returns>
+        public ushort ReadUInt16Safe(uint address)
+        {
+            int numBytesRead = 0;
+            byte[] readBuffer = new byte[2];
+
+            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
+            {
+                return BitConverter.ToUInt16(readBuffer, 0);
+            }
+            return 0;
+        }
         #endregion
 
         #region Read => 4 Byte Integer
@@ -283,6 +332,46 @@ namespace TrashMemCore
             }
             return 0;
         }
+
+        /// <summary>
+        /// Read a uint from memory.
+        /// </summary>
+        /// <param name="address">address to read</param>
+        /// <returns>the int value or 0 if it failed</returns>
+        public unsafe uint ReadUInt32(uint address)
+        {
+            int numBytesRead = 0;
+            byte[] readBuffer = new byte[4];
+
+            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
+            {
+                fixed (byte* ptr = readBuffer)
+                {
+                    return *(uint*)ptr;
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Read a int from memory.
+        /// 
+        /// Uses the BitConverter instead
+        /// of the unsafe code.
+        /// </summary>
+        /// <param name="address">address to read</param>
+        /// <returns>the int value or 0 if it failed</returns>
+        public uint ReadUInt32Safe(uint address)
+        {
+            int numBytesRead = 0;
+            byte[] readBuffer = new byte[4];
+
+            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
+            {
+                return BitConverter.ToUInt32(readBuffer, 0);
+            }
+            return 0;
+        }
         #endregion
 
         #region Read => 8 Byte Long
@@ -322,6 +411,46 @@ namespace TrashMemCore
             if (ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
             {
                 return BitConverter.ToInt64(readBuffer, 0);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Read a ulong from memory.
+        /// </summary>
+        /// <param name="address">address to read</param>
+        /// <returns>the long value or 0 if it failed</returns>
+        public unsafe ulong ReadUInt64(uint address)
+        {
+            int numBytesRead = 0;
+            byte[] readBuffer = new byte[8];
+
+            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
+            {
+                fixed (byte* ptr = readBuffer)
+                {
+                    return *(ulong*)ptr;
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Read a long from memory.
+        /// 
+        /// Uses the BitConverter instead
+        /// of the unsafe code.
+        /// </summary>
+        /// <param name="address">address to read</param>
+        /// <returns>the long value or 0 if it failed</returns>
+        public ulong ReadUInt64Safe(uint address)
+        {
+            int numBytesRead = 0;
+            byte[] readBuffer = new byte[8];
+
+            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
+            {
+                return BitConverter.ToUInt64(readBuffer, 0);
             }
             return 0;
         }

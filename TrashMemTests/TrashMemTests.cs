@@ -55,6 +55,9 @@ namespace TrashMemCore.Tests
             Assert.AreEqual(0xFF, TrashMem.ReadUnmanaged<short>(STATIC_ADDRESS_INT16));
             Assert.AreEqual(0xFFFF, TrashMem.ReadUnmanaged<int>(STATIC_ADDRESS_INT32));
             Assert.AreEqual(0xFFFFFFFFFFFFFF, TrashMem.ReadUnmanaged<long>(STATIC_ADDRESS_INT64));
+            Assert.AreEqual((ushort)0xFF, TrashMem.ReadUnmanaged<ushort>(STATIC_ADDRESS_INT16));
+            Assert.AreEqual((uint)0xFFFF, TrashMem.ReadUnmanaged<uint>(STATIC_ADDRESS_INT32));
+            Assert.AreEqual((ulong)0xFFFFFFFFFFFFFF, TrashMem.ReadUnmanaged<ulong>(STATIC_ADDRESS_INT64));
         }
 
         [TestMethod()]
@@ -79,11 +82,11 @@ namespace TrashMemCore.Tests
 
         [TestMethod()]
         public void ReadInt16Test()
-            => Assert.AreEqual(0xFF, TrashMem.ReadInt32(STATIC_ADDRESS_INT16));
+            => Assert.AreEqual(0xFF, TrashMem.ReadInt16(STATIC_ADDRESS_INT16));
 
         [TestMethod()]
         public void ReadInt16SafeTest()
-            => Assert.AreEqual(0xFF, TrashMem.ReadInt32Safe(STATIC_ADDRESS_INT16));
+            => Assert.AreEqual(0xFF, TrashMem.ReadInt16Safe(STATIC_ADDRESS_INT16));
 
         [TestMethod()]
         public void ReadInt32Test()
@@ -100,6 +103,30 @@ namespace TrashMemCore.Tests
         [TestMethod()]
         public void ReadInt64SafeTest()
             => Assert.AreEqual(0xFFFFFFFFFFFFFF, TrashMem.ReadInt64Safe(STATIC_ADDRESS_INT64));
+
+        [TestMethod()]
+        public void ReadUInt16Test()
+            => Assert.AreEqual((ushort)0xFF, TrashMem.ReadUInt16(STATIC_ADDRESS_INT16));
+
+        [TestMethod()]
+        public void ReadUInt16SafeTest()
+            => Assert.AreEqual((ushort)0xFF, TrashMem.ReadUInt16Safe(STATIC_ADDRESS_INT16));
+
+        [TestMethod()]
+        public void ReadUInt32Test()
+            => Assert.AreEqual((uint)0xFFFF, TrashMem.ReadUInt32(STATIC_ADDRESS_INT32));
+
+        [TestMethod()]
+        public void ReadUInt32SafeTest()
+            => Assert.AreEqual((uint)0xFFFF, TrashMem.ReadUInt32Safe(STATIC_ADDRESS_INT32));
+
+        [TestMethod()]
+        public void ReadUInt64Test()
+            => Assert.AreEqual((ulong)0xFFFFFFFFFFFFFF, TrashMem.ReadUInt64(STATIC_ADDRESS_INT64));
+
+        [TestMethod()]
+        public void ReadUInt64SafeTest()
+            => Assert.AreEqual((ulong)0xFFFFFFFFFFFFFF, TrashMem.ReadUInt64Safe(STATIC_ADDRESS_INT64));
 
 
         [TestMethod()]

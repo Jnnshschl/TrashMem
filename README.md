@@ -76,7 +76,7 @@ MemoryAllocation memAlloc = TrashMem.AllocateMemory(4);
 
 Trashmem.Write(memAlloc.Address, 1337);
 
-memAlloc.Free();
+TrashMem.FreeMemory(memAlloc);
 ```
 
 ## Assembly
@@ -89,9 +89,15 @@ TrashMem.Asm.Clear();
 byte[] asmBytes = TrashMem.Asm.Assemble("MOV EAX, 1");
 Trashmem.WriteBytes(memAlloc.Address, asmBytes);
 
-memAlloc.Free();
+TrashMem.FreeMemory(memAlloc);
 ```
 
 ## Method Hooking
 
 Coming soon!!!
+
+## Debug Gui
+
+This is a GUI to test the Allocation/Reading/Writing of Trashmem.
+
+![alt text](https://raw.githubusercontent.com/Jnnshschl/TrashMem/master/images/trashmem_debug.png "Debug GUI")

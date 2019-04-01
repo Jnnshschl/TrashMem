@@ -13,3 +13,11 @@ C:\Users\Administrator\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.pdb
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Debug\Fasm.NET.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.csproj.CopyComplete
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Debug\Fasm.NET.xml
+C:\Users\ameis\source\repos\TrashMem\TrashMem\bin\Debug\TrashMem.dll
+C:\Users\ameis\source\repos\TrashMem\TrashMem\bin\Debug\TrashMem.pdb
+C:\Users\ameis\source\repos\TrashMem\TrashMem\bin\Debug\fasmdll_managed.dll
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.csprojAssemblyReference.cache
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.csproj.CoreCompileInputs.cache
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.csproj.CopyComplete
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.dll
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Debug\TrashMem.pdb

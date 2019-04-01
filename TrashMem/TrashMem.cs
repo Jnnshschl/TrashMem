@@ -1,49 +1,25 @@
-﻿using Binarysharp.Assemblers.Fasm;
+﻿using Fasm;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using TrashMem.Objects;
+using TrashMem.Win32;
 using TrashMemCore.SizeManager;
 
 namespace TrashMemCore
 {
     public class TrashMem
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern int OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool CloseHandle(int handle);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool ReadProcessMemory(int hProcess, uint lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool ReadProcessMemory(int hProcess, uint lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool WriteProcessMemory(int hProcess, uint lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool WriteProcessMemory(int hProcess, uint lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern uint VirtualAllocEx(int hProcess, uint dwAddress, int dwSize, uint dwAllocationType, uint dwProtect);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool VirtualFreeEx(int hProcess, uint dwAddress, int dwSize, uint dwFreeType);
-
-
         public Process Process { get; private set; }
-        public int ProcessHandle { get; private set; }
+        public IntPtr ProcessHandle { get; private set; }
 
         public CachedSizeManager CachedSizeManager { get; private set; }
 
-        public FasmNet FasmNet { get; private set; }
+        public ManagedFasm Asm { get; private set; }
+
+        public List<MemoryAllocation> MemoryAllocations { get; private set; }
 
         /// <summary>
         /// TrashMem instance, use it to do all the stuff you want.
@@ -55,17 +31,24 @@ namespace TrashMemCore
         /// READ = 0x10 | WRITE = 0x20 | READWRITE = 0x30
         /// => https://docs.microsoft.com/de-de/windows/desktop/ProcThread/process-security-and-access-rights
         /// </param>
-        public TrashMem(Process process, int accessRights = 0x1F0FFF)
+        public TrashMem(Process process, ProcessAccess accessRights = ProcessAccess.PROCESS_ALL_ACCESS)
         {
             CachedSizeManager = new CachedSizeManager();
-            FasmNet = new FasmNet();
+            Asm = new ManagedFasm();
+            MemoryAllocations = new List<MemoryAllocation>();
+
             Process = process;
-            ProcessHandle = OpenProcess(accessRights, false, process.Id);
+            ProcessHandle = Kernel32.OpenProcess((uint)accessRights, false, process.Id);
         }
 
         public void Detach()
         {
-            CloseHandle(ProcessHandle);
+            foreach (MemoryAllocation memoryAllocation in MemoryAllocations)
+            {
+                memoryAllocation.Free();
+            }
+
+            Kernel32.CloseHandle(ProcessHandle);
         }
 
         #region Read => Generic
@@ -78,7 +61,7 @@ namespace TrashMemCore
         /// <typeparam name="T">Type of thing to read</typeparam>
         /// <param name="address">address to read it from</param>
         /// <returns>the value or default(T) if it failed</returns>
-        public unsafe T ReadUnmanaged<T>(uint address, int size = 0) where T : unmanaged
+        public unsafe T ReadUnmanaged<T>(IntPtr address, int size = 0) where T : unmanaged
         {
             if (size == 0)
             {
@@ -88,7 +71,7 @@ namespace TrashMemCore
             int numBytesRead = 0;
             byte[] readBuffer = new byte[size];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -104,13 +87,13 @@ namespace TrashMemCore
         /// <typeparam name="T">Type of thing to read</typeparam>
         /// <param name="address">address to read it from</param>
         /// <returns>the struct or default if it failed</returns>
-        public T ReadStruct<T>(uint address)
+        public T ReadStruct<T>(IntPtr address)
         {
             int size = Marshal.SizeOf(typeof(T));
             int numBytesRead = 0;
             IntPtr readBuffer = Marshal.AllocHGlobal(size);
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
             {
                 return (T)Marshal.PtrToStructure(readBuffer, typeof(T));
             }
@@ -124,19 +107,22 @@ namespace TrashMemCore
         /// <param name="encoding">Encoding to use</param>
         /// <param name="lenght">lenght of the string to read</param>
         /// <returns>the string read from memory</returns>
-        public string ReadString(uint address, Encoding encoding, int lenght = 0)
+        public string ReadString(IntPtr address, Encoding encoding, int lenght = 0)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[lenght];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, lenght, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, lenght, ref numBytesRead))
             {
                 List<byte> newBytes = new List<byte>();
 
                 foreach (byte b in readBuffer)
                 {
                     if (b == 0b0)
+                    {
                         break;
+                    }
+
                     newBytes.Add(b);
                 }
 
@@ -155,12 +141,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public byte[] ReadChars(uint address, int size)
+        public byte[] ReadChars(IntPtr address, int size)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[size];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
             {
                 return readBuffer;
             }
@@ -174,12 +160,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe byte ReadChar(uint address)
+        public unsafe byte ReadChar(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[1];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 1, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 1, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -197,12 +183,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public byte ReadCharSafe(uint address)
+        public byte ReadCharSafe(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[1];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 1, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 1, ref numBytesRead))
             {
                 return readBuffer[0];
             }
@@ -216,12 +202,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe short ReadInt16(uint address)
+        public unsafe short ReadInt16(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -239,12 +225,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public short ReadInt16Safe(uint address)
+        public short ReadInt16Safe(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
             {
                 return BitConverter.ToInt16(readBuffer, 0);
             }
@@ -256,12 +242,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe ushort ReadUInt16(uint address)
+        public unsafe ushort ReadUInt16(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -279,12 +265,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public ushort ReadUInt16Safe(uint address)
+        public ushort ReadUInt16Safe(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 2, ref numBytesRead))
             {
                 return BitConverter.ToUInt16(readBuffer, 0);
             }
@@ -298,12 +284,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public unsafe int ReadInt32(uint address)
+        public unsafe int ReadInt32(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -321,12 +307,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public int ReadInt32Safe(uint address)
+        public int ReadInt32Safe(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
             {
                 return BitConverter.ToInt32(readBuffer, 0);
             }
@@ -338,12 +324,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public unsafe uint ReadUInt32(uint address)
+        public unsafe uint ReadUInt32(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -361,12 +347,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public uint ReadUInt32Safe(uint address)
+        public uint ReadUInt32Safe(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 4, ref numBytesRead))
             {
                 return BitConverter.ToUInt32(readBuffer, 0);
             }
@@ -380,12 +366,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public unsafe long ReadInt64(uint address)
+        public unsafe long ReadInt64(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -403,12 +389,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public long ReadInt64Safe(uint address)
+        public long ReadInt64Safe(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
             {
                 return BitConverter.ToInt64(readBuffer, 0);
             }
@@ -420,12 +406,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public unsafe ulong ReadUInt64(uint address)
+        public unsafe ulong ReadUInt64(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
             {
                 fixed (byte* ptr = readBuffer)
                 {
@@ -443,12 +429,12 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public ulong ReadUInt64Safe(uint address)
+        public ulong ReadUInt64Safe(IntPtr address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
 
-            if (ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
+            if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, 8, ref numBytesRead))
             {
                 return BitConverter.ToUInt64(readBuffer, 0);
             }
@@ -465,7 +451,7 @@ namespace TrashMemCore
         /// <param name="value">thing ti write</param>
         /// <param name="size">optional size</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool Write<T>(uint address, T value, int size = 0)
+        public bool Write<T>(IntPtr address, T value, int size = 0)
         {
             if (size == 0)
             {
@@ -476,7 +462,7 @@ namespace TrashMemCore
             Marshal.StructureToPtr(value, writeBuffer, false);
 
             int numBytesWritten = 0;
-            bool result = WriteProcessMemory(ProcessHandle, address, writeBuffer, size, ref numBytesWritten);
+            bool result = Kernel32.WriteProcessMemory(ProcessHandle, address, writeBuffer, size, ref numBytesWritten);
 
             Marshal.DestroyStructure(writeBuffer, typeof(T));
             Marshal.FreeHGlobal(writeBuffer);
@@ -493,10 +479,10 @@ namespace TrashMemCore
         /// <param name="value">thing ti write</param>
         /// <param name="size">optional size</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool WriteBytes(uint address, byte[] value)
+        public bool WriteBytes(IntPtr address, byte[] value)
         {
             int numBytesWritten = 0;
-            bool result = WriteProcessMemory(ProcessHandle, address, value, value.Length, ref numBytesWritten);
+            bool result = Kernel32.WriteProcessMemory(ProcessHandle, address, value, value.Length, ref numBytesWritten);
             return result;
         }
 
@@ -507,27 +493,36 @@ namespace TrashMemCore
         /// <param name="text">the actual text to write</param>
         /// <param name="encoding">Encoding to use</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool WriteString(uint address, string text, Encoding encoding)
+        public bool WriteString(IntPtr address, string text, Encoding encoding)
         {
             byte[] stringBytes = encoding.GetBytes(text);
             int size = stringBytes.Length;
 
             int numBytesWritten = 0;
-            bool result = WriteProcessMemory(ProcessHandle, address, stringBytes, size, ref numBytesWritten);
+            bool result = Kernel32.WriteProcessMemory(ProcessHandle, address, stringBytes, size, ref numBytesWritten);
 
             return result;
         }
         #endregion
 
         #region Memory
-        public uint AllocateMemory(int size)
+        /// <summary>
+        /// Allocate Memory in the attached process
+        /// </summary>
+        /// <param name="size">size of the desired allocation</param>
+        /// <returns>
+        /// MemoryAllocation if memory got allocated,
+        /// null if there were errors
+        /// </returns>
+        public MemoryAllocation AllocateMemory(int size)
         {
-            return VirtualAllocEx(ProcessHandle, 0, size, 0x00001000, 0x40);
-        }
-
-        public bool FreeMemory(uint address)
-        {
-            return VirtualFreeEx(ProcessHandle, address, 0, 0x8000);
+            MemoryAllocation memoryAllocation = new MemoryAllocation(ProcessHandle, size);
+            if (memoryAllocation.Allocate())
+            {
+                MemoryAllocations.Add(memoryAllocation);
+                return memoryAllocation;
+            }
+            return null;
         }
         #endregion
     }

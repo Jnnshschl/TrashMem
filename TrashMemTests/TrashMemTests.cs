@@ -1,12 +1,9 @@
-﻿using TrashMemCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using TrashMem.Objects;
 
 namespace TrashMemCore.Tests
 {
@@ -25,11 +22,11 @@ namespace TrashMemCore.Tests
         /// to make thse tests work, maybe i will build some internal stuff
         /// but who knows...
         /// </summary>
-        private const uint STATIC_ADDRESS_CHAR = 0x30A48C;
-        private const uint STATIC_ADDRESS_INT16 = 0x30A490;
-        private const uint STATIC_ADDRESS_INT32 = 0x30A494;
-        private const uint STATIC_ADDRESS_INT64 = 0x30A498;
-        private const uint STATIC_ADDRESS_STRING = 0x5B1A4785;
+        private readonly IntPtr STATIC_ADDRESS_CHAR = new IntPtr(0x937AA);
+        private readonly IntPtr STATIC_ADDRESS_INT16 = new IntPtr(0x937A8);
+        private readonly IntPtr STATIC_ADDRESS_INT32 = new IntPtr(0x937B8);
+        private readonly IntPtr STATIC_ADDRESS_INT64 = new IntPtr(0x937B0);
+        private readonly IntPtr STATIC_ADDRESS_STRING = new IntPtr(0x930F4);
 
         private TrashMem TrashMem;
 
@@ -208,27 +205,29 @@ namespace TrashMemCore.Tests
         [TestMethod()]
         public void FasmTest()
         {
-            TrashMem.FasmNet.Clear();
-            TrashMem.FasmNet.AddLine("MOV EAX, 1");
-            TrashMem.FasmNet.Assemble();
-            TrashMem.FasmNet.Clear();
+            TrashMem.Asm.Clear();
+            TrashMem.Asm.AddLine("MOV EAX, 1");
+            TrashMem.Asm.Assemble();
+            TrashMem.Asm.Clear();
         }
 
         [TestMethod()]
         public void MemoryAllocFreeTest()
         {
-            uint memaddr = TrashMem.AllocateMemory(32);
-            Assert.IsTrue(TrashMem.FreeMemory(memaddr));
+            MemoryAllocation memAlloc = TrashMem.AllocateMemory(32);
+            Assert.IsNotNull(memAlloc);
+            Assert.IsTrue(memAlloc.Address.ToInt32() != 0x0);
+            Assert.IsTrue(memAlloc.Free());
         }
 
         [TestMethod()]
         public void MemoryAllocFreeMultiCharsBytesTest()
         {
-            uint memaddr = TrashMem.AllocateMemory(32);
+            MemoryAllocation memAlloc = TrashMem.AllocateMemory(32);
 
             byte[] sampleBytes = new byte[] { 0x1, 0x2, 0x3, 0x4, 0x5 };
-            TrashMem.WriteBytes(memaddr, sampleBytes);
-            byte[] bytesRead = TrashMem.ReadChars(memaddr, 5);
+            TrashMem.WriteBytes(memAlloc.Address, sampleBytes);
+            byte[] bytesRead = TrashMem.ReadChars(memAlloc.Address, 5);
 
             Assert.AreEqual(sampleBytes[0], bytesRead[0]);
             Assert.AreEqual(sampleBytes[1], bytesRead[1]);
@@ -236,7 +235,7 @@ namespace TrashMemCore.Tests
             Assert.AreEqual(sampleBytes[3], bytesRead[3]);
             Assert.AreEqual(sampleBytes[4], bytesRead[4]);
 
-            Assert.IsTrue(TrashMem.FreeMemory(memaddr));
+            Assert.IsTrue(memAlloc.Free());
         }
     }
 }

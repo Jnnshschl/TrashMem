@@ -11,3 +11,11 @@ C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CoreC
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CopyComplete
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.pdb
+C:\Users\ameis\source\repos\TrashMem\TrashMem\bin\Release\TrashMem.dll
+C:\Users\ameis\source\repos\TrashMem\TrashMem\bin\Release\TrashMem.pdb
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csprojAssemblyReference.cache
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CoreCompileInputs.cache
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CopyComplete
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.dll
+C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.pdb
+C:\Users\ameis\source\repos\TrashMem\TrashMem\bin\Release\fasmdll_managed.dll

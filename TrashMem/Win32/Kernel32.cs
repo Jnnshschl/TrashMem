@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrashMem.Win32
+namespace TrashMemGui.Win32
 {
     public static class Kernel32
     {

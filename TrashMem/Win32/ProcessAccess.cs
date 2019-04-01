@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrashMem.Win32
+namespace TrashMemGui.Win32
 {
     [Flags]
     public enum ProcessAccess : uint

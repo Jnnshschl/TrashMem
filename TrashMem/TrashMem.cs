@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using TrashMem.Objects;
-using TrashMem.Win32;
+using TrashMemGui.Objects;
+using TrashMemGui.Win32;
 using TrashMemCore.SizeManager;
 
 namespace TrashMemCore
@@ -47,8 +47,6 @@ namespace TrashMemCore
             {
                 memoryAllocation.Free();
             }
-
-            Kernel32.CloseHandle(ProcessHandle);
         }
 
         #region Read => Generic
@@ -523,6 +521,24 @@ namespace TrashMemCore
                 return memoryAllocation;
             }
             return null;
+        }
+
+
+        /// <summary>
+        /// Free Memory in the attached process
+        /// </summary>
+        /// <param name="memoryAllocation">MemoryAllocation to Free</param>
+        /// <returns>
+        /// true if successfully freed memory
+        /// </returns>
+        public bool FreeMemory(MemoryAllocation memoryAllocation)
+        {
+            if (memoryAllocation.Free())
+            {
+                MemoryAllocations.Remove(memoryAllocation);
+                return true;
+            }
+            return false;
         }
         #endregion
     }

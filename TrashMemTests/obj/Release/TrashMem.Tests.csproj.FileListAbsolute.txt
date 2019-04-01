@@ -25,12 +25,10 @@ C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\de\Microsoft.Vis
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\de\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\TrashMemTests.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\TrashMemTests.pdb
-C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\Fasm.NET.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\TrashMem.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\TrashMem.pdb
-C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\Fasm.NET.xml
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
 C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\obj\Release\TrashMem.Tests.csprojAssemblyReference.cache
@@ -58,3 +56,4 @@ C:\Users\ameis\source\repos\TrashMem\TrashMemTests\obj\Release\TrashMem.Tests.cs
 C:\Users\ameis\source\repos\TrashMem\TrashMemTests\obj\Release\TrashMemTests.dll
 C:\Users\ameis\source\repos\TrashMem\TrashMemTests\obj\Release\TrashMemTests.pdb
 C:\Users\ameis\source\repos\TrashMem\TrashMemTests\bin\Release\fasmdll_managed.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMemTests\bin\Release\fasmdll_managed.dll

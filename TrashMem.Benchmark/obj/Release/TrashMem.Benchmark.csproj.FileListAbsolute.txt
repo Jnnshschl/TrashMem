@@ -11,10 +11,8 @@ C:\Users\Administrator\source\repos\TrashMem\TrashMem.Benchmark\obj\Release\Tras
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\TrashMem.Benchmark.exe.config
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\TrashMem.Benchmark.exe
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\TrashMem.Benchmark.pdb
-C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\Fasm.NET.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\TrashMem.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\TrashMem.pdb
-C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\Fasm.NET.xml
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Release\TrashMem.Benchmark.csprojAssemblyReference.cache
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Release\TrashMem.Benchmark.csproj.CoreCompileInputs.cache
 C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\obj\Release\TrashMem.Benchmark.csproj.CopyComplete
@@ -31,3 +29,4 @@ C:\Users\ameis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\TrashMem.dll
 C:\Users\ameis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\TrashMem.pdb
 C:\Users\ameis\source\repos\TrashMem\TrashMem.Benchmark\obj\Release\TrashMem.Benchmark.csproj.CopyComplete
 C:\Users\ameis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\fasmdll_managed.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMem.Benchmark\bin\Release\fasmdll_managed.dll

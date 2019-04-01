@@ -1,7 +1,7 @@
 ﻿using System;
-using TrashMem.Win32;
+using TrashMemGui.Win32;
 
-namespace TrashMem.Objects
+namespace TrashMemGui.Objects
 {
     public class MemoryAllocation
     {
@@ -32,6 +32,11 @@ namespace TrashMem.Objects
             );
 
             return Address.ToInt32() != 0x0;
+        }
+
+        public override string ToString()
+        {
+            return $"{Size} byte => 0x{Address.ToString("X")}";
         }
     }
 }

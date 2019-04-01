@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using TrashMem.Objects;
+using TrashMemGui.Objects;
 
 namespace TrashMemCore.Tests
 {
@@ -22,11 +22,11 @@ namespace TrashMemCore.Tests
         /// to make thse tests work, maybe i will build some internal stuff
         /// but who knows...
         /// </summary>
-        private readonly IntPtr STATIC_ADDRESS_CHAR = new IntPtr(0x937AA);
-        private readonly IntPtr STATIC_ADDRESS_INT16 = new IntPtr(0x937A8);
-        private readonly IntPtr STATIC_ADDRESS_INT32 = new IntPtr(0x937B8);
-        private readonly IntPtr STATIC_ADDRESS_INT64 = new IntPtr(0x937B0);
-        private readonly IntPtr STATIC_ADDRESS_STRING = new IntPtr(0x930F4);
+        private readonly IntPtr STATIC_ADDRESS_CHAR = new IntPtr(0x3AA48C);
+        private readonly IntPtr STATIC_ADDRESS_INT16 = new IntPtr(0x3AA490);
+        private readonly IntPtr STATIC_ADDRESS_INT32 = new IntPtr(0x3AA494);
+        private readonly IntPtr STATIC_ADDRESS_INT64 = new IntPtr(0x3AA498);
+        private readonly IntPtr STATIC_ADDRESS_STRING = new IntPtr(0x5B9A4785);
 
         private TrashMem TrashMem;
 

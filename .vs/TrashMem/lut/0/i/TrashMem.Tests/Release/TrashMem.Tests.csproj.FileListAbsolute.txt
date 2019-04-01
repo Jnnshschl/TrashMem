@@ -5,6 +5,7 @@ C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Rel
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Release\de\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Release\de\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\b\TrashMemTests\bin\Release\TrashMemTests.dll
+C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Tests\Release\TrashMem.Tests.csprojAssemblyReference.cache
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Tests\Release\TrashMem.Tests.csproj.CoreCompileInputs.cache
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Tests\Release\TrashMem.Tests.csproj.CopyComplete
 C:\Users\Jannis\source\repos\TrashMem\.vs\TrashMem\lut\0\i\TrashMem.Tests\Release\TrashMemTests.dll

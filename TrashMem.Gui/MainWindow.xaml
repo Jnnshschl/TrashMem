@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="560" Width="900" Loaded="Window_Loaded">
     <Grid>
-        <ListBox x:Name="listboxProcesses" HorizontalAlignment="Left" Height="110" Margin="6,16,0,0" VerticalAlignment="Top" Width="628" SelectionChanged="ListboxProcesses_SelectionChanged"/>
-        <GroupBox Header="Process Information" HorizontalAlignment="Left" Height="120" Margin="639,6,0,0" VerticalAlignment="Top" Width="240">
+        <ListBox x:Name="listboxProcesses" HorizontalAlignment="Left" Height="110" Margin="6,16,0,0" VerticalAlignment="Top" Width="323" SelectionChanged="ListboxProcesses_SelectionChanged"/>
+        <GroupBox Header="Process Information" HorizontalAlignment="Left" Height="120" Margin="356,6,0,0" VerticalAlignment="Top" Width="277">
             <Grid Margin="0,0,-1.667,-3.333">
                 <Label x:Name="labelProcessIdDesc" Content="ProcessId:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-4,0,0"/>
                 <Label x:Name="labelProcessNameDesc" Content="ProcessName:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,22,0,0"/>
@@ -93,6 +93,13 @@
                 <Label x:Name="labelFloat" Content="n/a" HorizontalAlignment="Left" Margin="56,78,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="164"/>
                 <Label x:Name="labelDoubleDesc" Content="Double:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,104,0,0"/>
                 <Label x:Name="labelDouble" Content="n/a" HorizontalAlignment="Left" Margin="56,104,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="164"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Toolbox" HorizontalAlignment="Left" Height="120" Margin="639,6,0,0" VerticalAlignment="Top" Width="243">
+            <Grid Margin="0,0,-1.667,-3.333">
+                <Button x:Name="buttonMemoryInspector" Content="Memory Inspector" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="213"/>
+                <Button x:Name="buttonHookManager" Content="Hook Manager" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="213"/>
+                <Button x:Name="buttonFlatAssembler" Content="Flat Assembler" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="213"/>
             </Grid>
         </GroupBox>
 

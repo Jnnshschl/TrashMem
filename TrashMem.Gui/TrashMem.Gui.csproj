@@ -40,7 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="fasmdll_managed">
-      <HintPath>..\..\AmeisenBotRevamped\TrashMem\fasmdll_managed.dll</HintPath>
+      <HintPath>..\packages\fasmdll_managed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -74,8 +74,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MemoryInspector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemoryInspector.xaml.cs">
+      <DependentUpon>MemoryInspector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Objects\CProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TrashMemCore;
 using TrashMemGui.Gui.Objects;
 using TrashMemGui.Objects;
@@ -26,10 +20,12 @@ namespace TrashMemGui.Gui
     /// </summary>
     public partial class MainWindow : Window
     {
-        TrashMem TrashMem { get; set; }
+        private TrashMem TrashMem { get; set; }
+        public string DllPath { get; private set; }
 
         public MainWindow()
         {
+            DllPath = AppDomain.CurrentDomain.BaseDirectory + "\\TrashMem.HookDll.dll";
             InitializeComponent();
         }
 
@@ -54,7 +50,9 @@ namespace TrashMemGui.Gui
             if (listboxProcesses != null)
             {
                 if (TrashMem != null)
+                {
                     TrashMem.Detach();
+                }
 
                 TrashMem = new TrashMem(((CProcess)listboxProcesses.SelectedItem).Process);
 
@@ -70,7 +68,9 @@ namespace TrashMemGui.Gui
         private void ButtonDetach_Click(object sender, RoutedEventArgs e)
         {
             if (TrashMem != null)
+            {
                 TrashMem.Detach();
+            }
 
             labelTrashMemAttachedId.Content = "n/a";
             labelTrashMemProcessHandle.Content = "n/a";
@@ -133,7 +133,10 @@ namespace TrashMemGui.Gui
             if (TrashMem != null)
             {
                 if (int.TryParse(textboxAllocSize.Text, out int allocSize))
+                {
                     TrashMem.AllocateMemory(allocSize);
+                }
+
                 UpdateAllocations();
             }
         }
@@ -143,7 +146,10 @@ namespace TrashMemGui.Gui
             if (TrashMem != null)
             {
                 if (listboxAllocations.SelectedItem != null)
+                {
                     TrashMem.FreeMemory((MemoryAllocation)listboxAllocations.SelectedItem);
+                }
+
                 UpdateAllocations();
 
                 labelInt16.Content = "n/a";
@@ -322,6 +328,31 @@ namespace TrashMemGui.Gui
                 TrashMem.WriteBytes(address, new byte[size]);
                 UpdateByteViews(address, size);
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string folder = System.IO.Path.GetDirectoryName(
+                ((CProcess)listboxProcesses.SelectedItem).Process.MainModule.FileName);
+            string filename = System.IO.Path.GetFileName(DllPath);
+
+            File.Copy(DllPath, $"{folder}\\{filename}");
+
+            TrashMem.InjectDll(DllPath);
+
+            UpdateAllocations();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                DllPath = openFileDialog.FileName;
+            }
+
+            labelDll.Content = System.IO.Path.GetFileName(DllPath);
         }
     }
 }

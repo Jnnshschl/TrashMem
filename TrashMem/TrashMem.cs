@@ -23,6 +23,7 @@ namespace TrashMemCore
         public ManagedFasm Asm { get; private set; }
 
         public List<MemoryAllocation> MemoryAllocations { get; private set; }
+        public List<IntPtr> RemoteThreads { get; private set; }
 
         /// <summary>
         /// TrashMem instance, use it to do all the stuff you want.
@@ -551,12 +552,12 @@ namespace TrashMemCore
         public bool InjectDll(string dllPath)
         {
             string dllName = Path.GetFileName(dllPath);
-            int dllNameSize = ((dllName.Length + 1) * CachedSizeManager.SizeOf(typeof(char)));
+            int dllNameSize = Encoding.ASCII.GetBytes(dllName).Length;
 
             MemoryAllocation memAlloc = AllocateMemory(dllNameSize);
             WriteString(memAlloc.Address, dllName, Encoding.ASCII);
 
-            Kernel32.CreateRemoteThread(
+            RemoteThreads.Add(Kernel32.CreateRemoteThread(
                 ProcessHandle, 
                 IntPtr.Zero, 
                 0, 
@@ -564,7 +565,7 @@ namespace TrashMemCore
                 memAlloc.Address, 
                 0, 
                 IntPtr.Zero
-            );
+            ));
 
             return true;
         }

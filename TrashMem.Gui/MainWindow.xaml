@@ -9,19 +9,19 @@
         Title="MainWindow" Height="560" Width="900" Loaded="Window_Loaded">
     <Grid>
         <ListBox x:Name="listboxProcesses" HorizontalAlignment="Left" Height="110" Margin="6,16,0,0" VerticalAlignment="Top" Width="345" SelectionChanged="ListboxProcesses_SelectionChanged"/>
-        <GroupBox Header="Process Information" HorizontalAlignment="Left" Height="120" Margin="356,6,0,0" VerticalAlignment="Top" Width="277">
+        <GroupBox Header="Process Information" HorizontalAlignment="Left" Height="165" Margin="356,6,0,0" VerticalAlignment="Top" Width="277">
             <Grid Margin="0,0,-1.667,-3.333">
-                <Label x:Name="labelProcessIdDesc" Content="ProcessId:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-4,0,0"/>
-                <Label x:Name="labelProcessNameDesc" Content="ProcessName:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,22,0,0"/>
-                <Label x:Name="labelProcessName" Content="n/a" HorizontalAlignment="Left" Margin="89,22,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="131"/>
-                <Label x:Name="labelProcessId" Content="n/a" HorizontalAlignment="Left" Margin="89,-4,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="131"/>
-                <Label x:Name="labelProcessBaseAddressDesc" Content="BaseAddress:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,48,0,0"/>
-                <Label x:Name="labelProcessBaseAddress" Content="n/a" HorizontalAlignment="Left" Margin="89,48,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="131"/>
-                <Label x:Name="labelProcessWindowTitleDesc" Content="WindowTitle:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,74,0,0"/>
-                <Label x:Name="labelProcessWindowTitle" Content="n/a" HorizontalAlignment="Left" Margin="89,74,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="131"/>
+                <Label x:Name="labelProcessIdDesc" Content="ProcessId:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Label x:Name="labelProcessNameDesc" Content="ProcessName:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,26,0,0"/>
+                <Label x:Name="labelProcessName" Content="n/a" HorizontalAlignment="Left" Margin="89,26,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
+                <Label x:Name="labelProcessId" Content="n/a" HorizontalAlignment="Left" Margin="89,0,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
+                <Label x:Name="labelProcessBaseAddressDesc" Content="BaseAddress:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,52,0,0"/>
+                <Label x:Name="labelProcessBaseAddress" Content="n/a" HorizontalAlignment="Left" Margin="89,52,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
+                <Label x:Name="labelProcessWindowTitleDesc" Content="WindowTitle:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,78,0,0"/>
+                <Label x:Name="labelProcessWindowTitle" Content="n/a" HorizontalAlignment="Left" Margin="89,78,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="TrashMem Information" HorizontalAlignment="Left" Height="160" Margin="6,166,0,0" VerticalAlignment="Top" Width="345">
+        <GroupBox Header="TrashMem Information" HorizontalAlignment="Left" Height="195" Margin="6,131,0,0" VerticalAlignment="Top" Width="345">
             <Grid Margin="0,0,-1.667,-3.333">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="65*"/>
@@ -41,11 +41,13 @@
                 <Label x:Name="labelTrashMemCachedSizes" Content="n/a" Margin="107,72,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
                 <Label x:Name="labelLoadLibaryADesc" Content="LoadLibaryA:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,36,0,0" Grid.ColumnSpan="2"/>
                 <Label x:Name="labelTrashMemAllocs" Content="n/a" Margin="107,90,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
+                <Label x:Name="labelTrashMemThreadsDesc" Content="RemoteThreads:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,108,0,0" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelTrashMemThreads" Content="n/a" Margin="107,108,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="buttonRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="6,131,0,0" VerticalAlignment="Top" Width="75" Click="ButtonRefresh_Click"/>
+        <Button x:Name="buttonRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="291,106,0,0" VerticalAlignment="Top" Width="60" Click="ButtonRefresh_Click"/>
         <ListBox x:Name="listboxAllocations" HorizontalAlignment="Left" Height="150" Margin="639,176,0,0" VerticalAlignment="Top" Width="241" SelectionChanged="ListboxAllocations_SelectionChanged"/>
-        <GroupBox Header="Allocation Information" HorizontalAlignment="Left" Height="160" Margin="356,166,0,0" VerticalAlignment="Top" Width="278">
+        <GroupBox Header="Allocation Information" HorizontalAlignment="Left" Height="150" Margin="356,176,0,0" VerticalAlignment="Top" Width="278">
             <Grid Margin="0,0,-1.667,-3.333">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0*"/>

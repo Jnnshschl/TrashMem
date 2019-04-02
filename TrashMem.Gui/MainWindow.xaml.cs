@@ -52,6 +52,7 @@ namespace TrashMemGui.Gui
                 if (TrashMem != null)
                 {
                     TrashMem.Detach();
+                    ResetTrashMemViews();
                 }
 
                 TrashMem = new TrashMem(((CProcess)listboxProcesses.SelectedItem).Process);
@@ -60,6 +61,7 @@ namespace TrashMemGui.Gui
                 labelTrashMemProcessHandle.Content = $"0x{TrashMem.ProcessHandle.ToString("X")}";
                 labelTrashMemAllocs.Content = $"{TrashMem.MemoryAllocations.Count}";
                 labelTrashMemCachedSizes.Content = $"{TrashMem.CachedSizeManager.SizeCache.Count}";
+                labelTrashMemThreads.Content = $"{TrashMem.CachedSizeManager.SizeCache.Count}";
                 labelKernel32Module.Content = $"0x{TrashMem.Kernel32ModuleHandle.ToString("X")}";
                 labelLoadLibaryA.Content = $"0x{TrashMem.LoadLibraryAAddress.ToString("X")}";
             }
@@ -72,10 +74,16 @@ namespace TrashMemGui.Gui
                 TrashMem.Detach();
             }
 
+            ResetTrashMemViews();
+        }
+
+        private void ResetTrashMemViews()
+        {
             labelTrashMemAttachedId.Content = "n/a";
             labelTrashMemProcessHandle.Content = "n/a";
             labelTrashMemAllocs.Content = "n/a";
             labelTrashMemCachedSizes.Content = "n/a";
+            labelTrashMemThreads.Content = "n/a";
             labelKernel32Module.Content = "n/a";
             labelLoadLibaryA.Content = "n/a";
 
@@ -332,15 +340,21 @@ namespace TrashMemGui.Gui
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string folder = System.IO.Path.GetDirectoryName(
-                ((CProcess)listboxProcesses.SelectedItem).Process.MainModule.FileName);
-            string filename = System.IO.Path.GetFileName(DllPath);
+            if (listboxProcesses.SelectedItem != null)
+            {
+                string folder = System.IO.Path.GetDirectoryName(
+                    ((CProcess)listboxProcesses.SelectedItem).Process.MainModule.FileName);
+                string filename = System.IO.Path.GetFileName(DllPath);
 
-            File.Copy(DllPath, $"{folder}\\{filename}");
+                if (!File.Exists($"{folder}\\{filename}"))
+                {
+                    File.Copy(DllPath, $"{folder}\\{filename}");
+                }
 
-            TrashMem.InjectDll(DllPath);
+                TrashMem.InjectDll(DllPath);
 
-            UpdateAllocations();
+                UpdateAllocations();
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

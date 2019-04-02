@@ -62,6 +62,8 @@ namespace TrashMemGui.Gui
                 labelTrashMemProcessHandle.Content = $"0x{TrashMem.ProcessHandle.ToString("X")}";
                 labelTrashMemAllocs.Content = $"{TrashMem.MemoryAllocations.Count}";
                 labelTrashMemCachedSizes.Content = $"{TrashMem.CachedSizeManager.SizeCache.Count}";
+                labelKernel32Module.Content = $"0x{TrashMem.Kernel32ModuleHandle.ToString("X")}";
+                labelLoadLibaryA.Content = $"0x{TrashMem.LoadLibraryAAddress.ToString("X")}";
             }
         }
 
@@ -74,6 +76,8 @@ namespace TrashMemGui.Gui
             labelTrashMemProcessHandle.Content = "n/a";
             labelTrashMemAllocs.Content = "n/a";
             labelTrashMemCachedSizes.Content = "n/a";
+            labelKernel32Module.Content = "n/a";
+            labelLoadLibaryA.Content = "n/a";
 
             labelAllocAddress.Content = "n/a";
             labelAllocSize.Content = "n/a";
@@ -141,6 +145,12 @@ namespace TrashMemGui.Gui
                 if (listboxAllocations.SelectedItem != null)
                     TrashMem.FreeMemory((MemoryAllocation)listboxAllocations.SelectedItem);
                 UpdateAllocations();
+
+                labelInt16.Content = "n/a";
+                labelInt32.Content = "n/a";
+                labelInt64.Content = "n/a";
+                labelFloat.Content = "n/a";
+                labelDouble.Content = "n/a";
             }
         }
 

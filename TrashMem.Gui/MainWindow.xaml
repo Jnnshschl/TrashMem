@@ -30,13 +30,17 @@
                 <Label x:Name="labelTrashMemAttachedIdDesc" Content="ProcessId:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Button x:Name="buttonAttach" Content="Attach" HorizontalAlignment="Left" Margin="6,0,0,6" Width="75" Click="ButtonAttach_Click" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
                 <Button x:Name="buttonDetach" Content="Detach" HorizontalAlignment="Left" Margin="21.157,0,0,6" Width="75" Click="ButtonDetach_Click" Height="20" VerticalAlignment="Bottom" Grid.Column="1"/>
-                <Label x:Name="labelTrashMemAttachedHandleDesc" Content="ProcessHandle:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,26,0,0" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelTrashMemAttachedHandleDesc" Content="ProcessHandle:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,18,0,0" Grid.ColumnSpan="2"/>
                 <Label x:Name="labelTrashMemAttachedId" Content="n/a" Margin="107.157,0,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
-                <Label x:Name="labelTrashMemProcessHandle" Content="n/a" Margin="107.157,26,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
-                <Label x:Name="labelTrashMemAllocsDesc" Content="MemAllocs:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,52,0,0" Grid.ColumnSpan="2"/>
-                <Label x:Name="labelTrashMemCachedSizesDesc" Content="CachedSizes:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,78,0,0" Grid.ColumnSpan="2"/>
-                <Label x:Name="labelTrashMemAllocs" Content="n/a" Margin="106.667,52,10.333,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
-                <Label x:Name="labelTrashMemCachedSizes" Content="n/a" Margin="106.667,78,10.333,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
+                <Label x:Name="labelTrashMemProcessHandle" Content="n/a" Margin="107,18,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
+                <Label x:Name="labelTrashMemAllocsDesc" Content="MemAllocs:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,90,0,0" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelTrashMemCachedSizesDesc" Content="CachedSizes:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,72,0,0" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelLoadLibaryA" Content="n/a" Margin="107,36,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
+                <Label x:Name="labelKernel32Module" Content="n/a" Margin="107,54,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
+                <Label x:Name="labelKernel32ModuleDesc" Content="Kernel32Module:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,54,0,0" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelTrashMemCachedSizes" Content="n/a" Margin="107,72,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
+                <Label x:Name="labelLoadLibaryADesc" Content="LoadLibaryA:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,36,0,0" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelTrashMemAllocs" Content="n/a" Margin="107,90,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
             </Grid>
         </GroupBox>
         <Button x:Name="buttonRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="6,131,0,0" VerticalAlignment="Top" Width="75" Click="ButtonRefresh_Click"/>

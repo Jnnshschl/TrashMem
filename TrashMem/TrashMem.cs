@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using TrashMemCore.SizeManager;
 using TrashMemGui.Objects;
 using TrashMemGui.Win32;
-using TrashMemCore.SizeManager;
 
 namespace TrashMemCore
 {
@@ -14,6 +15,8 @@ namespace TrashMemCore
     {
         public Process Process { get; private set; }
         public IntPtr ProcessHandle { get; private set; }
+        public IntPtr Kernel32ModuleHandle { get; private set; }
+        public IntPtr LoadLibraryAAddress { get; private set; }
 
         public CachedSizeManager CachedSizeManager { get; private set; }
 
@@ -39,6 +42,8 @@ namespace TrashMemCore
 
             Process = process;
             ProcessHandle = Kernel32.OpenProcess((uint)accessRights, false, process.Id);
+            Kernel32ModuleHandle = Kernel32.GetModuleHandle("kernel32.dll");
+            LoadLibraryAAddress = Kernel32.GetProcAddress(Kernel32ModuleHandle, "LoadLibraryA");
         }
 
         public void Detach()
@@ -539,6 +544,29 @@ namespace TrashMemCore
                 return true;
             }
             return false;
+        }
+        #endregion
+
+        #region Injection/Threads
+        public bool InjectDll(string dllPath)
+        {
+            string dllName = Path.GetFileName(dllPath);
+            int dllNameSize = ((dllName.Length + 1) * CachedSizeManager.SizeOf(typeof(char)));
+
+            MemoryAllocation memAlloc = AllocateMemory(dllNameSize);
+            WriteString(memAlloc.Address, dllName, Encoding.ASCII);
+
+            Kernel32.CreateRemoteThread(
+                ProcessHandle, 
+                IntPtr.Zero, 
+                0, 
+                LoadLibraryAAddress, 
+                memAlloc.Address, 
+                0, 
+                IntPtr.Zero
+            );
+
+            return true;
         }
         #endregion
     }

@@ -1,14 +1,20 @@
 #include "dllmain.hpp"
 
+/*
+EXAMPLE DLL
+
+This dll can be used as a temlplate, modify it to your needs.
+Currently it only calls some functions from ShittyMcUlow.exe.
+*/
+
 extern "C" __declspec(dllexport) bool WINAPI DllMain(HINSTANCE hInstance, DWORD fwdReason, LPVOID lpvReserved)
 {
 	switch (fwdReason)
 	{
-	case DLL_PROCESS_ATTACH:
-		signal(SIGINT, sig_handler);
-
-		ExecuteOutputTrash();
-		break;
+		case DLL_PROCESS_ATTACH:
+			signal(SIGINT, sig_handler);
+			ExecuteOutputTrash();
+			break;
 
 	}
 
@@ -37,20 +43,17 @@ void ExecuteOutputTrash()
 		= (fastcall_output_int32*)p_output_int32_fastcall;
 
 	while (g_running) {
-		//# Simple function calls
-		/*
+		//# Simple inline assembly function calls
 		__asm
 		{
 			CALL p_output_trash_cdecl
 			CALL p_output_int32_stdcall
 			CALL p_output_int32_fastcall
 		};
-		*/
 
-		//# Function calls with 2 integer args
+		//# Inline assembly cunction calls with 2 integer args
 		// CDECL, simple stuff, need to clean the stack
 		// => output_int32_cdecl(4711, 1337)
-		/*
 		__asm
 		{
 			PUSH 1337
@@ -58,35 +61,30 @@ void ExecuteOutputTrash()
 			CALL p_output_int32_cdecl
 			ADD ESP, 0x8
 		};
-		*/
 
 		// STDCALL, simple stuff, 
 		// no need to clean the stack
 		// => output_int32_stdcall(4711, 1337)
-		/*
 		__asm
 		{
 			PUSH 1337
 			PUSH 4711
 			CALL p_output_int32_stdcall
 		};
-		*/
 
 		// FASTCALL, this trash follows no standard, 
 		// it may not work with some applications
 		// => output_int32_fastcall(4711, 1337)
-		/*
 		__asm
 		{
 			MOV EAX, 4711
 			MOV EBX, 1337
 			CALL p_output_int32_fastcall
 		};
-		*/
 
 		// THISCALL, will follow...
 
-		//# Non asm calls
+		//# Non inline assembly calls
 		func_output_int32_cdecl(4711, 1337);
 		func_output_int32_stdcall(4711, 1337);
 		func_output_int32_fastcall(4711, 1337);

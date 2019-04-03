@@ -1,7 +1,7 @@
 ﻿using System;
-using TrashMemGui.Win32;
+using TrashMemCore.Win32;
 
-namespace TrashMemGui.Objects
+namespace TrashMemCore.Objects
 {
     public class MemoryAllocation
     {

@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using TrashMemGui.Objects;
+using TrashMemCore.Objects;
 
 namespace TrashMemCore.Tests
 {

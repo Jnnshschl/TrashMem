@@ -9,11 +9,10 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using TrashMemCore;
-using TrashMemGui.Gui.Objects;
-using TrashMemGui.Objects;
+using TrashMemCore.Gui.Objects;
+using TrashMemCore.Objects;
 
-namespace TrashMemGui.Gui
+namespace TrashMemCore.Gui
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
@@ -64,6 +63,7 @@ namespace TrashMemGui.Gui
                 labelTrashMemThreads.Content = $"{TrashMem.CachedSizeManager.SizeCache.Count}";
                 labelKernel32Module.Content = $"0x{TrashMem.Kernel32ModuleHandle.ToString("X")}";
                 labelLoadLibaryA.Content = $"0x{TrashMem.LoadLibraryAAddress.ToString("X")}";
+                labelTrashMemThreads.Content = $"{TrashMem.RemoteThreads.Count}";
             }
         }
 
@@ -86,6 +86,7 @@ namespace TrashMemGui.Gui
             labelTrashMemThreads.Content = "n/a";
             labelKernel32Module.Content = "n/a";
             labelLoadLibaryA.Content = "n/a";
+            labelTrashMemThreads.Content = "n/a";
 
             labelAllocAddress.Content = "n/a";
             labelAllocSize.Content = "n/a";
@@ -145,7 +146,7 @@ namespace TrashMemGui.Gui
                     TrashMem.AllocateMemory(allocSize);
                 }
 
-                UpdateAllocations();
+                UpdateAllocationsAndThreads();
             }
         }
 
@@ -158,7 +159,7 @@ namespace TrashMemGui.Gui
                     TrashMem.FreeMemory((MemoryAllocation)listboxAllocations.SelectedItem);
                 }
 
-                UpdateAllocations();
+                UpdateAllocationsAndThreads();
 
                 labelInt16.Content = "n/a";
                 labelInt32.Content = "n/a";
@@ -168,7 +169,7 @@ namespace TrashMemGui.Gui
             }
         }
 
-        private void UpdateAllocations()
+        private void UpdateAllocationsAndThreads()
         {
             listboxAllocations.Items.Clear();
             foreach (MemoryAllocation memAlloc in TrashMem.MemoryAllocations)
@@ -176,6 +177,14 @@ namespace TrashMemGui.Gui
                 listboxAllocations.Items.Add(memAlloc);
             }
             labelTrashMemAllocs.Content = $"{TrashMem.MemoryAllocations.Count}";
+
+
+            listboxRemoteThreads.Items.Clear();
+            foreach (RemoteThread remoteThread in TrashMem.RemoteThreads)
+            {
+                listboxRemoteThreads.Items.Add(remoteThread);
+            }
+            labelTrashMemThreads.Content = $"{TrashMem.RemoteThreads.Count}";
         }
 
         private void ListboxAllocations_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -338,26 +347,29 @@ namespace TrashMemGui.Gui
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonInjectDll_Click(object sender, RoutedEventArgs e)
         {
             if (listboxProcesses.SelectedItem != null)
             {
-                string folder = System.IO.Path.GetDirectoryName(
+                string dllFolder = Path.GetDirectoryName(
                     ((CProcess)listboxProcesses.SelectedItem).Process.MainModule.FileName);
-                string filename = System.IO.Path.GetFileName(DllPath);
+                string dllName = Path.GetFileName(DllPath);
 
-                if (!File.Exists($"{folder}\\{filename}"))
+                string dllPath = $"{dllFolder}\\{dllName}";
+
+                if (File.Exists(dllPath))
                 {
-                    File.Copy(DllPath, $"{folder}\\{filename}");
+                    File.Delete(dllPath);
                 }
+                File.Copy(DllPath, dllPath);
 
                 TrashMem.InjectDll(DllPath);
 
-                UpdateAllocations();
+                UpdateAllocationsAndThreads();
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ButtonSelectDll_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
@@ -366,7 +378,31 @@ namespace TrashMemGui.Gui
                 DllPath = openFileDialog.FileName;
             }
 
-            labelDll.Content = System.IO.Path.GetFileName(DllPath);
+            labelDll.Content = Path.GetFileName(DllPath);
+        }
+
+        private void ListboxRemoteThreads_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listboxRemoteThreads.SelectedItem != null)
+            {
+                IntPtr handle = ((RemoteThread)listboxRemoteThreads.SelectedItem).Handle;
+                labelThreadHandle.Content = $"0x{handle.ToString("X")}";
+            }
+            else
+            {
+                labelThreadHandle.Content = "n/a";
+            }
+        }
+
+        private void ButtonCloseHandle_Click(object sender, RoutedEventArgs e)
+        {
+            if (listboxRemoteThreads.SelectedItem != null)
+            {
+                IntPtr handle = ((RemoteThread)listboxRemoteThreads.SelectedItem).Handle;
+                TrashMem.TerminateThread((RemoteThread)listboxRemoteThreads.SelectedItem, 0x1);
+
+                UpdateAllocationsAndThreads();
+            }
         }
     }
 }

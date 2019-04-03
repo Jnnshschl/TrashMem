@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dllmain.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{49895030-D9A1-4F92-86B6-C701E600591C}</ProjectGuid>

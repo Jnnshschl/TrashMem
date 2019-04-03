@@ -3,22 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TrashMemGui.Gui"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TrashMemGui.Gui.MainWindow"
+        xmlns:local="clr-namespace:TrashMemCore.Gui"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="TrashMemCore.Gui.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="560" Width="900" Loaded="Window_Loaded">
     <Grid>
         <ListBox x:Name="listboxProcesses" HorizontalAlignment="Left" Height="110" Margin="6,16,0,0" VerticalAlignment="Top" Width="345" SelectionChanged="ListboxProcesses_SelectionChanged"/>
-        <GroupBox Header="Process Information" HorizontalAlignment="Left" Height="165" Margin="356,6,0,0" VerticalAlignment="Top" Width="277">
+        <GroupBox Header="Process Information" HorizontalAlignment="Left" Height="120" Margin="356,6,0,0" VerticalAlignment="Top" Width="277">
             <Grid Margin="0,0,-1.667,-3.333">
                 <Label x:Name="labelProcessIdDesc" Content="ProcessId:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Label x:Name="labelProcessNameDesc" Content="ProcessName:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,26,0,0"/>
-                <Label x:Name="labelProcessName" Content="n/a" HorizontalAlignment="Left" Margin="89,26,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
+                <Label x:Name="labelProcessNameDesc" Content="ProcessName:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,18,0,0"/>
+                <Label x:Name="labelProcessName" Content="n/a" HorizontalAlignment="Left" Margin="89,18,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
                 <Label x:Name="labelProcessId" Content="n/a" HorizontalAlignment="Left" Margin="89,0,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
-                <Label x:Name="labelProcessBaseAddressDesc" Content="BaseAddress:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,52,0,0"/>
-                <Label x:Name="labelProcessBaseAddress" Content="n/a" HorizontalAlignment="Left" Margin="89,52,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
-                <Label x:Name="labelProcessWindowTitleDesc" Content="WindowTitle:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,78,0,0"/>
-                <Label x:Name="labelProcessWindowTitle" Content="n/a" HorizontalAlignment="Left" Margin="89,78,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
+                <Label x:Name="labelProcessBaseAddressDesc" Content="BaseAddress:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,36,0,0"/>
+                <Label x:Name="labelProcessBaseAddress" Content="n/a" HorizontalAlignment="Left" Margin="89,36,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
+                <Label x:Name="labelProcessWindowTitleDesc" Content="WindowTitle:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,54,0,0"/>
+                <Label x:Name="labelProcessWindowTitle" Content="n/a" HorizontalAlignment="Left" Margin="89,54,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="168"/>
+                <Button x:Name="buttonRefresh" Content="Refresh ProcessList" HorizontalAlignment="Left" Margin="4,78,0,0" VerticalAlignment="Top" Width="253" Click="ButtonRefresh_Click"/>
             </Grid>
         </GroupBox>
         <GroupBox Header="TrashMem Information" HorizontalAlignment="Left" Height="195" Margin="6,131,0,0" VerticalAlignment="Top" Width="345">
@@ -45,36 +46,33 @@
                 <Label x:Name="labelTrashMemThreads" Content="n/a" Margin="107,108,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="buttonRefresh" Content="Refresh" HorizontalAlignment="Left" Margin="291,106,0,0" VerticalAlignment="Top" Width="60" Click="ButtonRefresh_Click"/>
-        <ListBox x:Name="listboxAllocations" HorizontalAlignment="Left" Height="150" Margin="639,176,0,0" VerticalAlignment="Top" Width="241" SelectionChanged="ListboxAllocations_SelectionChanged"/>
-        <GroupBox Header="Allocation Information" HorizontalAlignment="Left" Height="150" Margin="356,176,0,0" VerticalAlignment="Top" Width="278">
+        <GroupBox Header="Allocation Information" HorizontalAlignment="Left" Height="108" Margin="355,131,0,0" VerticalAlignment="Top" Width="527">
             <Grid Margin="0,0,-1.667,-3.333">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Label x:Name="labelAllocAddressDesc" Content="AllocAddress:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="90" Height="26"/>
-                <Button x:Name="buttonNewAlloc" Content="Allocate New" HorizontalAlignment="Left" Margin="6,0,0,6" Width="84" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Click="ButtonNewAlloc_Click"/>
-                <Button x:Name="buttonFreeAlloc" Content="Free Selected" Margin="99,0,10,6" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Click="ButtonFreeAlloc_Click"/>
-                <Label x:Name="labelAllocSizeDesc" Content="AllocSize:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,26,0,0" Grid.ColumnSpan="2" Height="26" Width="90"/>
-                <Label x:Name="labelAllocAddress" Content="n/a" Margin="107,0,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1" Height="26"/>
-                <Label x:Name="labelAllocSize" Content="n/a" Margin="107,26,10,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1" Height="26"/>
-                <Label x:Name="labelTrashMemCachedSizesDesc1" Content="AllocSize:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,78,0,0" Grid.ColumnSpan="2" Height="26" Width="78"/>
-                <TextBox x:Name="textboxAllocSize" Grid.ColumnSpan="2" Height="23" Margin="99,82,10,0" TextWrapping="Wrap" Text="32" VerticalAlignment="Top" HorizontalContentAlignment="Right" PreviewTextInput="TextboxAllocSize_PreviewTextInput"/>
+                <Button x:Name="buttonNewAlloc" Content="Allocate New" HorizontalAlignment="Left" Margin="6,0,0,4.333" Width="84" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Click="ButtonNewAlloc_Click"/>
+                <Button x:Name="buttonFreeAlloc" Content="Free Selected" Margin="99,0,0,4.333" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Click="ButtonFreeAlloc_Click" HorizontalAlignment="Left" Width="160"/>
+                <Label x:Name="labelAllocSizeDesc" Content="AllocSize:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,18,0,0" Grid.ColumnSpan="2" Height="26" Width="90"/>
+                <Label x:Name="labelAllocAddress" Content="n/a" Margin="107,0,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1" Height="26" HorizontalAlignment="Left" Width="152"/>
+                <Label x:Name="labelAllocSize" Content="n/a" Margin="107,18,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1" Height="26" HorizontalAlignment="Left" Width="152"/>
+                <Label x:Name="labelTrashMemCachedSizesDesc1" Content="NewAllocSize:" HorizontalAlignment="Right" Margin="0,0,427,27.333" Grid.ColumnSpan="2" Width="90" Height="26" VerticalAlignment="Bottom"/>
+                <TextBox x:Name="textboxAllocSize" Grid.ColumnSpan="2" Margin="99,0,0,31.333" TextWrapping="Wrap" Text="32" HorizontalContentAlignment="Right" PreviewTextInput="TextboxAllocSize_PreviewTextInput" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="160"/>
+                <ListBox x:Name="listboxAllocations" HorizontalAlignment="Left" Height="89" Margin="264,-2,0,0" VerticalAlignment="Top" Width="252" SelectionChanged="ListboxAllocations_SelectionChanged" Grid.ColumnSpan="2"/>
             </Grid>
         </GroupBox>
-        <TextBox x:Name="textboxByteView" Height="166" Margin="251,351,364.333,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalScrollBarVisibility="Auto"/>
-        <TextBox x:Name="textboxDecodedByteView" Height="166" Margin="534,351,259.333,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalScrollBarVisibility="Auto"/>
-        <GroupBox Header="Allocation Writing" HorizontalAlignment="Left" Height="176" Margin="6,341,0,0" VerticalAlignment="Top" Width="240">
+        <GroupBox Header="Allocation Writing" HorizontalAlignment="Left" Height="186" Margin="6,331,0,0" VerticalAlignment="Top" Width="627">
             <Grid Margin="0,0,-1.667,-3.333">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="buttonWriteData" Content="Write Data" HorizontalAlignment="Left" Margin="6,0,0,6" Width="84" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Click="ButtonWriteData_Click"/>
-                <Button x:Name="buttonResetMemory" Content="Reset Memory" Margin="99,0,10,6" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Click="ButtonResetMemory_Click"/>
+                <Button x:Name="buttonResetMemory" Content="Reset Memory" Margin="99,0,0,6.333" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Click="ButtonResetMemory_Click" HorizontalAlignment="Left" Width="121"/>
                 <Label x:Name="labelTrashMemCachedSizesDesc2" Content="DataToWrite:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="26" Width="78"/>
-                <TextBox x:Name="textboxData" Grid.ColumnSpan="2" Height="78" Margin="6,31,10,0" TextWrapping="Wrap" Text="AyyLMAO" VerticalAlignment="Top"/>
+                <TextBox x:Name="textboxData" Grid.ColumnSpan="2" Height="78" Margin="6,31,0,0" TextWrapping="Wrap" Text="AyyLMAO" VerticalAlignment="Top" HorizontalAlignment="Left" Width="214"/>
                 <ComboBox x:Name="comboboxDataType" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="99,4,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="7">
                     <System:String>Bytes</System:String>
                     <System:String>Char</System:String>
@@ -85,9 +83,11 @@
                     <System:String>Double</System:String>
                     <System:String>ASCII String</System:String>
                 </ComboBox>
+                <TextBox x:Name="textboxByteView" Margin="225,4,0,6.333" TextWrapping="Wrap" HorizontalScrollBarVisibility="Auto" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="218"/>
+                <TextBox x:Name="textboxDecodedByteView" Height="157" Margin="448,4,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalScrollBarVisibility="Auto" Grid.ColumnSpan="2"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Value Information" HorizontalAlignment="Left" Height="166" Margin="639,351,0,0" VerticalAlignment="Top" Width="240">
+        <GroupBox Header="Value Information" HorizontalAlignment="Left" Height="186" Margin="639,331,0,0" VerticalAlignment="Top" Width="243">
             <Grid Margin="0,0,-1.667,-3.333">
                 <Label x:Name="labelInt16Desc" Content="Int16:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Label x:Name="labelInt16" Content="n/a" HorizontalAlignment="Left" Margin="56,0,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="164"/>
@@ -101,14 +101,23 @@
                 <Label x:Name="labelDouble" Content="n/a" HorizontalAlignment="Left" Margin="56,104,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="164"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Toolbox" HorizontalAlignment="Left" Height="165" Margin="639,6,0,0" VerticalAlignment="Top" Width="243">
+        <GroupBox Header="Toolbox" HorizontalAlignment="Left" Height="120" Margin="639,6,0,0" VerticalAlignment="Top" Width="243">
             <Grid Margin="0,0,-1.667,-3.333">
-                <Button x:Name="buttonMemoryInspector" Content="Memory Inspector" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="213"/>
-                <Button x:Name="buttonHookManager" Content="Hook Manager" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="213"/>
-                <Button x:Name="buttonFlatAssembler" Content="Flat Assembler" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="213"/>
-                <Button x:Name="buttonInjectDll" Content="Inject Dll (CreateRemoteProcess)" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Width="213" Click="Button_Click"/>
-                <Label x:Name="labelDll" Content="TrashMem.HookDll.dl" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top"/>
-                <Button x:Name="buttonOpenDll" Content="Open Dll" HorizontalAlignment="Left" Margin="148,91,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+                <Button x:Name="buttonInjectDll" Content="Inject Dll (CreateRemoteProcess)" HorizontalAlignment="Left" Margin="6,51,0,0" VerticalAlignment="Top" Width="217" Click="ButtonInjectDll_Click"/>
+                <Label x:Name="labelDll" Content="TrashMem.HookDll.dl" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Button x:Name="buttonOpenDll" Content="Open Dll" HorizontalAlignment="Left" Margin="6,26,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSelectDll_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="RemoteThread Information" HorizontalAlignment="Left" Height="82" Margin="355,244,0,0" VerticalAlignment="Top" Width="527">
+            <Grid Margin="0,0,-1.667,-3.333">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="labelThreadHandleDesc" Content="AllocAddress:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="90" Height="26"/>
+                <Button x:Name="buttonCloseHandle" Content="CloseHandle" Margin="4,0,0,4.333" Height="20" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Left" Width="86" Click="ButtonCloseHandle_Click"/>
+                <Label x:Name="labelThreadHandle" Content="n/a" Margin="107,0,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Grid.Column="1" Height="26" HorizontalAlignment="Left" Width="152"/>
+                <ListBox x:Name="listboxRemoteThreads" HorizontalAlignment="Left" Height="62" Margin="264,-1,0,0" VerticalAlignment="Top" Width="253" SelectionChanged="ListboxRemoteThreads_SelectionChanged" Grid.ColumnSpan="2"/>
             </Grid>
         </GroupBox>
 

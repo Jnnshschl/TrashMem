@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace TrashMemGui.Gui
+namespace TrashMemCore.Gui
 {
     /// <summary>
     /// Interaktionslogik für MemoryInspector.xaml

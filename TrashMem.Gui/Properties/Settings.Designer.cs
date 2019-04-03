@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TrashMemGui.Gui.Properties
+namespace TrashMemCore.Gui.Properties
 {
 
 

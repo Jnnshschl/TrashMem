@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using TrashMemCore.Objects;
 using TrashMemCore.SizeManager;
-using TrashMemGui.Objects;
-using TrashMemGui.Win32;
+using TrashMemCore.Win32;
 
 namespace TrashMemCore
 {
@@ -23,7 +23,7 @@ namespace TrashMemCore
         public ManagedFasm Asm { get; private set; }
 
         public List<MemoryAllocation> MemoryAllocations { get; private set; }
-        public List<IntPtr> RemoteThreads { get; private set; }
+        public List<RemoteThread> RemoteThreads { get; private set; }
 
         /// <summary>
         /// TrashMem instance, use it to do all the stuff you want.
@@ -40,6 +40,7 @@ namespace TrashMemCore
             CachedSizeManager = new CachedSizeManager();
             Asm = new ManagedFasm();
             MemoryAllocations = new List<MemoryAllocation>();
+            RemoteThreads = new List<RemoteThread>();
 
             Process = process;
             ProcessHandle = Kernel32.OpenProcess((uint)accessRights, false, process.Id);
@@ -557,17 +558,35 @@ namespace TrashMemCore
             MemoryAllocation memAlloc = AllocateMemory(dllNameSize);
             WriteString(memAlloc.Address, dllName, Encoding.ASCII);
 
-            RemoteThreads.Add(Kernel32.CreateRemoteThread(
-                ProcessHandle, 
-                IntPtr.Zero, 
-                0, 
-                LoadLibraryAAddress, 
-                memAlloc.Address, 
-                0, 
-                IntPtr.Zero
-            ));
+            RemoteThreads.Add
+            (
+                new RemoteThread
+                (
+                    Kernel32.CreateRemoteThread
+                    (
+                        ProcessHandle,
+                        IntPtr.Zero,
+                        0,
+                        LoadLibraryAAddress,
+                        memAlloc.Address,
+                        0,
+                        IntPtr.Zero
+                    )
+                )
+            );
 
             return true;
+        }
+
+        public bool TerminateThread(RemoteThread thread, uint exitCode = 0x0)
+        {
+            RemoteThreads.Remove(thread);
+            return Kernel32.TerminateThread(thread.Handle, exitCode);
+        }
+
+        public bool CloseHandle(IntPtr handle)
+        {
+            return Kernel32.CloseHandle(handle);
         }
         #endregion
     }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrashMemGui.Gui.Objects
+namespace TrashMemCore.Gui.Objects
 {
     public class CProcess
     {

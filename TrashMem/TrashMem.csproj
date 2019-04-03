@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Objects\MemoryAllocation.cs" />
+    <Compile Include="Objects\RemoteThread.cs" />
     <Compile Include="SizeManager\CachedSizeManager.cs" />
     <Compile Include="TrashMem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

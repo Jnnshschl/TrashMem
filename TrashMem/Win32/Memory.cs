@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrashMemGui.Win32
+namespace TrashMemCore.Win32
 {
     [Flags]
     public enum Memory : uint

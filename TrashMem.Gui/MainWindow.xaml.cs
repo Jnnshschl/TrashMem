@@ -191,7 +191,7 @@ namespace TrashMemCore.Gui
         {
             if (listboxAllocations.SelectedItem != null)
             {
-                IntPtr address = ((MemoryAllocation)listboxAllocations.SelectedItem).Address;
+                uint address = ((MemoryAllocation)listboxAllocations.SelectedItem).Address;
                 int size = ((MemoryAllocation)listboxAllocations.SelectedItem).Size;
                 labelAllocAddress.Content = $"0x{address.ToString("X")}";
                 labelAllocSize.Content = $"{size}";
@@ -206,7 +206,7 @@ namespace TrashMemCore.Gui
             }
         }
 
-        private void UpdateByteViews(IntPtr address, int size)
+        private void UpdateByteViews(uint address, int size)
         {
             byte[] bytes = TrashMem.ReadChars(address, size);
             textboxByteView.Text = GenerateByteView(bytes);
@@ -271,7 +271,7 @@ namespace TrashMemCore.Gui
         {
             if (TrashMem != null && listboxAllocations.SelectedItem != null)
             {
-                IntPtr address = ((MemoryAllocation)listboxAllocations.SelectedItem).Address;
+                uint address = ((MemoryAllocation)listboxAllocations.SelectedItem).Address;
                 int size = ((MemoryAllocation)listboxAllocations.SelectedItem).Size;
 
                 switch ((string)comboboxDataType.SelectedItem)
@@ -339,7 +339,7 @@ namespace TrashMemCore.Gui
         {
             if (TrashMem != null && listboxAllocations.SelectedItem != null)
             {
-                IntPtr address = ((MemoryAllocation)listboxAllocations.SelectedItem).Address;
+                uint address = ((MemoryAllocation)listboxAllocations.SelectedItem).Address;
                 int size = ((MemoryAllocation)listboxAllocations.SelectedItem).Size;
 
                 TrashMem.WriteBytes(address, new byte[size]);
@@ -385,7 +385,7 @@ namespace TrashMemCore.Gui
         {
             if (listboxRemoteThreads.SelectedItem != null)
             {
-                IntPtr handle = ((RemoteThread)listboxRemoteThreads.SelectedItem).Handle;
+                uint handle = ((RemoteThread)listboxRemoteThreads.SelectedItem).Handle;
                 labelThreadHandle.Content = $"0x{handle.ToString("X")}";
             }
             else
@@ -398,7 +398,7 @@ namespace TrashMemCore.Gui
         {
             if (listboxRemoteThreads.SelectedItem != null)
             {
-                IntPtr handle = ((RemoteThread)listboxRemoteThreads.SelectedItem).Handle;
+                uint handle = ((RemoteThread)listboxRemoteThreads.SelectedItem).Handle;
                 TrashMem.TerminateThread((RemoteThread)listboxRemoteThreads.SelectedItem, 0x1);
 
                 UpdateAllocationsAndThreads();

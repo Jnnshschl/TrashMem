@@ -10,39 +10,39 @@ namespace TrashMemCore.Win32
     public static class Kernel32
     {
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+        public static extern uint OpenProcess(uint dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool CloseHandle(IntPtr handle);
+        public static extern bool CloseHandle(uint handle);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool TerminateThread(IntPtr handle, uint dwExitCode);
+        public static extern bool TerminateThread(uint handle, uint dwExitCode);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+        public static extern bool ReadProcessMemory(uint hProcess, uint lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
+        public static extern bool ReadProcessMemory(uint hProcess, uint lpBaseAddress, uint lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+        public static extern bool WriteProcessMemory(uint hProcess, uint lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, IntPtr lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
+        public static extern bool WriteProcessMemory(uint hProcess, uint lpBaseAddress, uint lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr dwAddress, int dwSize, uint dwAllocationType, uint dwProtect);
+        public static extern uint VirtualAllocEx(uint hProcess, uint dwAddress, int dwSize, uint dwAllocationType, uint dwProtect);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr dwAddress, int dwSize, uint dwFreeType);
+        public static extern bool VirtualFreeEx(uint hProcess, uint dwAddress, int dwSize, uint dwFreeType);
         
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr GetModuleHandle(string lpModuleName);
+        public static extern uint GetModuleHandle(string lpModuleName);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
-        public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+        public static extern uint GetProcAddress(uint hModule, string procName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
+        public static extern uint CreateRemoteThread(uint hProcess, uint lpThreadAttributes, uint dwStackSize, uint lpStartAddress, uint lpParameter, uint dwCreationFlags, uint lpThreadId);
     }
 }

@@ -14,9 +14,9 @@ namespace TrashMemCore
     public class TrashMem
     {
         public Process Process { get; private set; }
-        public IntPtr ProcessHandle { get; private set; }
-        public IntPtr Kernel32ModuleHandle { get; private set; }
-        public IntPtr LoadLibraryAAddress { get; private set; }
+        public uint ProcessHandle { get; private set; }
+        public uint Kernel32ModuleHandle { get; private set; }
+        public uint LoadLibraryAAddress { get; private set; }
 
         public CachedSizeManager CachedSizeManager { get; private set; }
 
@@ -37,8 +37,7 @@ namespace TrashMemCore
         /// </param>
         public TrashMem(Process process, ProcessAccess accessRights = ProcessAccess.PROCESS_ALL_ACCESS)
         {
-            CachedSizeManager = new CachedSizeManager();
-            Asm = new ManagedFasm();
+            CachedSizeManager = new CachedSizeManager();            
             MemoryAllocations = new List<MemoryAllocation>();
             RemoteThreads = new List<RemoteThread>();
 
@@ -46,6 +45,8 @@ namespace TrashMemCore
             ProcessHandle = Kernel32.OpenProcess((uint)accessRights, false, process.Id);
             Kernel32ModuleHandle = Kernel32.GetModuleHandle("kernel32.dll");
             LoadLibraryAAddress = Kernel32.GetProcAddress(Kernel32ModuleHandle, "LoadLibraryA");
+
+            Asm = new ManagedFasm(new IntPtr(ProcessHandle));
         }
 
         public void Detach()
@@ -66,7 +67,7 @@ namespace TrashMemCore
         /// <typeparam name="T">Type of thing to read</typeparam>
         /// <param name="address">address to read it from</param>
         /// <returns>the value or default(T) if it failed</returns>
-        public unsafe T ReadUnmanaged<T>(IntPtr address, int size = 0) where T : unmanaged
+        public unsafe T ReadUnmanaged<T>(uint address, int size = 0) where T : unmanaged
         {
             if (size == 0)
             {
@@ -92,15 +93,15 @@ namespace TrashMemCore
         /// <typeparam name="T">Type of thing to read</typeparam>
         /// <param name="address">address to read it from</param>
         /// <returns>the struct or default if it failed</returns>
-        public T ReadStruct<T>(IntPtr address)
+        public T ReadStruct<T>(uint address)
         {
             int size = Marshal.SizeOf(typeof(T));
             int numBytesRead = 0;
-            IntPtr readBuffer = Marshal.AllocHGlobal(size);
+            uint readBuffer = (uint)Marshal.AllocHGlobal(size).ToInt32();
 
             if (Kernel32.ReadProcessMemory(ProcessHandle, address, readBuffer, size, ref numBytesRead))
             {
-                return (T)Marshal.PtrToStructure(readBuffer, typeof(T));
+                return (T)Marshal.PtrToStructure(new IntPtr(readBuffer), typeof(T));
             }
             return default;
         }
@@ -112,7 +113,7 @@ namespace TrashMemCore
         /// <param name="encoding">Encoding to use</param>
         /// <param name="lenght">lenght of the string to read</param>
         /// <returns>the string read from memory</returns>
-        public string ReadString(IntPtr address, Encoding encoding, int lenght = 0)
+        public string ReadString(uint address, Encoding encoding, int lenght = 0)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[lenght];
@@ -146,7 +147,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public byte[] ReadChars(IntPtr address, int size)
+        public byte[] ReadChars(uint address, int size)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[size];
@@ -165,7 +166,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe byte ReadChar(IntPtr address)
+        public unsafe byte ReadChar(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[1];
@@ -188,7 +189,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public byte ReadCharSafe(IntPtr address)
+        public byte ReadCharSafe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[1];
@@ -207,7 +208,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe short ReadInt16(IntPtr address)
+        public unsafe short ReadInt16(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
@@ -230,7 +231,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public short ReadInt16Safe(IntPtr address)
+        public short ReadInt16Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
@@ -247,7 +248,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public unsafe ushort ReadUInt16(IntPtr address)
+        public unsafe ushort ReadUInt16(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
@@ -270,7 +271,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the short value or 0 if it failed</returns>
-        public ushort ReadUInt16Safe(IntPtr address)
+        public ushort ReadUInt16Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[2];
@@ -289,7 +290,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public unsafe int ReadInt32(IntPtr address)
+        public unsafe int ReadInt32(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
@@ -312,7 +313,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public int ReadInt32Safe(IntPtr address)
+        public int ReadInt32Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
@@ -329,7 +330,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public unsafe uint ReadUInt32(IntPtr address)
+        public unsafe uint ReadUInt32(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
@@ -352,7 +353,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the int value or 0 if it failed</returns>
-        public uint ReadUInt32Safe(IntPtr address)
+        public uint ReadUInt32Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[4];
@@ -371,7 +372,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public unsafe long ReadInt64(IntPtr address)
+        public unsafe long ReadInt64(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
@@ -394,7 +395,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public long ReadInt64Safe(IntPtr address)
+        public long ReadInt64Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
@@ -411,7 +412,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public unsafe ulong ReadUInt64(IntPtr address)
+        public unsafe ulong ReadUInt64(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
@@ -434,7 +435,7 @@ namespace TrashMemCore
         /// </summary>
         /// <param name="address">address to read</param>
         /// <returns>the long value or 0 if it failed</returns>
-        public ulong ReadUInt64Safe(IntPtr address)
+        public ulong ReadUInt64Safe(uint address)
         {
             int numBytesRead = 0;
             byte[] readBuffer = new byte[8];
@@ -456,21 +457,21 @@ namespace TrashMemCore
         /// <param name="value">thing ti write</param>
         /// <param name="size">optional size</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool Write<T>(IntPtr address, T value, int size = 0)
+        public bool Write<T>(uint address, T value, int size = 0)
         {
             if (size == 0)
             {
                 size = CachedSizeManager.SizeOf(typeof(T));
             }
 
-            IntPtr writeBuffer = Marshal.AllocHGlobal(size);
-            Marshal.StructureToPtr(value, writeBuffer, false);
+            uint writeBuffer = (uint)Marshal.AllocHGlobal(size).ToInt32();
+            Marshal.StructureToPtr(value, new IntPtr(writeBuffer), false);
 
             int numBytesWritten = 0;
             bool result = Kernel32.WriteProcessMemory(ProcessHandle, address, writeBuffer, size, ref numBytesWritten);
 
-            Marshal.DestroyStructure(writeBuffer, typeof(T));
-            Marshal.FreeHGlobal(writeBuffer);
+            Marshal.DestroyStructure(new IntPtr(writeBuffer), typeof(T));
+            Marshal.FreeHGlobal(new IntPtr(writeBuffer));
 
             return result;
         }
@@ -484,7 +485,7 @@ namespace TrashMemCore
         /// <param name="value">thing ti write</param>
         /// <param name="size">optional size</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool WriteBytes(IntPtr address, byte[] value)
+        public bool WriteBytes(uint address, byte[] value)
         {
             int numBytesWritten = 0;
             bool result = Kernel32.WriteProcessMemory(ProcessHandle, address, value, value.Length, ref numBytesWritten);
@@ -498,7 +499,7 @@ namespace TrashMemCore
         /// <param name="text">the actual text to write</param>
         /// <param name="encoding">Encoding to use</param>
         /// <returns>true if successful, false if it failed</returns>
-        public bool WriteString(IntPtr address, string text, Encoding encoding)
+        public bool WriteString(uint address, string text, Encoding encoding)
         {
             byte[] stringBytes = encoding.GetBytes(text);
             int size = stringBytes.Length;
@@ -565,12 +566,12 @@ namespace TrashMemCore
                     Kernel32.CreateRemoteThread
                     (
                         ProcessHandle,
-                        IntPtr.Zero,
+                        0,
                         0,
                         LoadLibraryAAddress,
                         memAlloc.Address,
                         0,
-                        IntPtr.Zero
+                        0
                     )
                 )
             );
@@ -584,7 +585,7 @@ namespace TrashMemCore
             return Kernel32.TerminateThread(thread.Handle, exitCode);
         }
 
-        public bool CloseHandle(IntPtr handle)
+        public bool CloseHandle(uint handle)
         {
             return Kernel32.CloseHandle(handle);
         }

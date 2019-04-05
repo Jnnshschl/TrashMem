@@ -5,12 +5,12 @@ namespace TrashMemCore.Objects
 {
     public class MemoryAllocation
     {
-        public IntPtr Address { get; private set; }
+        public uint Address { get; private set; }
         public int Size { get; private set; }
 
-        private IntPtr ProcessHandle { get; set; }
+        private uint ProcessHandle { get; set; }
 
-        public MemoryAllocation(IntPtr processHandle, int size)
+        public MemoryAllocation(uint processHandle, int size)
         {
             ProcessHandle = processHandle;
             Size = size;
@@ -21,17 +21,17 @@ namespace TrashMemCore.Objects
             return Kernel32.VirtualFreeEx(ProcessHandle, Address, 0, 0x8000);
         }
 
-        public bool Allocate()
+        public bool Allocate(ProtectionType protectionType = ProtectionType.PAGE_EXECUTE_READWRITE)
         {
             Address = Kernel32.VirtualAllocEx(
                 ProcessHandle,
-                new IntPtr(0x0),
+                0x0,
                 Size,
                 (uint)Memory.COMMIT,
-                (uint)ProtectionType.PAGE_READWRITE
+                (uint)protectionType
             );
 
-            return Address.ToInt32() != 0x0;
+            return Address != 0x0;
         }
 
         public override string ToString()

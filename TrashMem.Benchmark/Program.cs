@@ -15,11 +15,11 @@ namespace TrashMemCore.Benchmark
 
     internal class Program
     {
-        private static readonly IntPtr STATIC_ADDRESS_CHAR = new IntPtr(0x9128C);
-        private static readonly IntPtr STATIC_ADDRESS_INT16 = new IntPtr(0x91290);
-        private static readonly IntPtr STATIC_ADDRESS_INT32 = new IntPtr(0x91294);
-        private static readonly IntPtr STATIC_ADDRESS_INT64 = new IntPtr(0x91298);
-        private static readonly IntPtr STATIC_ADDRESS_STRING = new IntPtr(0x930F4);
+        private static readonly uint STATIC_ADDRESS_CHAR = 0x9128C;
+        private static readonly uint STATIC_ADDRESS_INT16 = 0x91290;
+        private static readonly uint STATIC_ADDRESS_INT32 = 0x91294;
+        private static readonly uint STATIC_ADDRESS_INT64 = 0x91298;
+        private static readonly uint STATIC_ADDRESS_STRING = 0x930F4;
 
         private const int TOTAL_RUNS = 100000;
 

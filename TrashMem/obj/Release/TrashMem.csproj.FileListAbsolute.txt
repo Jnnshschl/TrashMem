@@ -5,8 +5,6 @@ C:\Users\Administrator\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.dll
 C:\Users\Administrator\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.pdb
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Release\TrashMem.dll
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Release\TrashMem.pdb
-C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Release\Fasm.NET.dll
-C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Release\Fasm.NET.xml
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CoreCompileInputs.cache
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CopyComplete
 C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.dll
@@ -19,3 +17,5 @@ C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csproj.CopyCo
 C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.dll
 C:\Users\ameis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.pdb
 C:\Users\ameis\source\repos\TrashMem\TrashMem\bin\Release\fasmdll_managed.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\bin\Release\fasmdll_managed.dll
+C:\Users\Jannis\source\repos\TrashMem\TrashMem\obj\Release\TrashMem.csprojAssemblyReference.cache

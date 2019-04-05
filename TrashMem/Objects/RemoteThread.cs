@@ -8,9 +8,9 @@ namespace TrashMemCore.Objects
 {
     public class RemoteThread
     {
-        public IntPtr Handle { get; private set; }
+        public uint Handle { get; private set; }
 
-        public RemoteThread(IntPtr handle)
+        public RemoteThread(uint handle)
         {
             Handle = handle;
         }

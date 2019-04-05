@@ -22,11 +22,11 @@ namespace TrashMemCore.Tests
         /// to make thse tests work, maybe i will build some internal stuff
         /// but who knows...
         /// </summary>
-        private readonly IntPtr STATIC_ADDRESS_CHAR = new IntPtr(0x3AA48C);
-        private readonly IntPtr STATIC_ADDRESS_INT16 = new IntPtr(0x3AA490);
-        private readonly IntPtr STATIC_ADDRESS_INT32 = new IntPtr(0x3AA494);
-        private readonly IntPtr STATIC_ADDRESS_INT64 = new IntPtr(0x3AA498);
-        private readonly IntPtr STATIC_ADDRESS_STRING = new IntPtr(0x5B9A4785);
+        private readonly uint STATIC_ADDRESS_CHAR = 0x3AA48C;
+        private readonly uint STATIC_ADDRESS_INT16 = 0x3AA490;
+        private readonly uint STATIC_ADDRESS_INT32 = 0x3AA494;
+        private readonly uint STATIC_ADDRESS_INT64 = 0x3AA498;
+        private readonly uint STATIC_ADDRESS_STRING = 0x5B9A4785;
 
         private TrashMem TrashMem;
 
@@ -216,7 +216,7 @@ namespace TrashMemCore.Tests
         {
             MemoryAllocation memAlloc = TrashMem.AllocateMemory(32);
             Assert.IsNotNull(memAlloc);
-            Assert.IsTrue(memAlloc.Address.ToInt32() != 0x0);
+            Assert.IsTrue(memAlloc.Address != 0x0);
             Assert.IsTrue(memAlloc.Free());
         }
 
